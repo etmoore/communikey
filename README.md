@@ -22,7 +22,7 @@ commitment required, many people who would like to volunteer, simply don't do
 so.
 
 ### Hypothesis: 
-**People would volunteer more if it was easier.**
+**People would volunteer more if it were easier.**
 
 ### Goal:
 Volunteering should be frictionless. I want local opportunities that work with
@@ -32,10 +32,10 @@ In addition to formal volunteer opportunities, I also want to be notified when
 someone in my neighborhood needs my help, whether it's moving boxes or setting
 up their WiFi.
 
-There are volunteer opportunities all around us. Our friends and neighbors could
-use our help more often than we realize, but it's difficult to ask for or offer
-help. If we knew the ways in which we could be helpful to others by giving our
-time and energy, we'd do it more often.
+There are volunteer opportunities all around us. Our neighbors could
+use our help more often than we realize, but it can be socially
+difficult/awkward to request/offer help. If we knew _how_ we could
+help others, we'd do it more often.
 
 ### Example Volunteer Opportunities
 1. Sam, an 80 year-old neighbor needs help getting to and from the grocery 
