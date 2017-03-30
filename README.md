@@ -18,15 +18,14 @@ volunteer opportunities (eg animal shelters, nursing homes, schools, soup
 kitchens) often require lengthy/involved applications and hours of training.
 Those who survive the gauntlet are then asked to make weekly time commitments
 that can be hard to keep with busy, variable schedules. Because of the time and
-commitment required, many people who would like to volunteer, simply don't do
-so.
+commitment required, many people who would like to volunteer don't.
 
 ### Hypothesis: 
 **People would volunteer more if it were easier.**
 
 ### Goal:
 Volunteering should be frictionless. I want local opportunities that work with
-my schedule and allow me to use my skills/talents for good.
+my schedule and allow me to leverage my skills.
 
 In addition to formal volunteer opportunities, I also want to be notified when
 someone in my neighborhood needs my help, whether it's moving boxes or setting
