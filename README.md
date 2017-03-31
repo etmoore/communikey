@@ -32,7 +32,7 @@ someone in my neighborhood needs my help, whether it's moving boxes or setting
 up their WiFi.
 
 There are volunteer opportunities all around us. Our neighbors could
-use our help more often than we realize, but it can be socially
+use our help more often than we realize (and visa versa), but it can be socially
 difficult/awkward to request/offer help. If we knew _how_ we could
 help others, we'd do it more often.
 
@@ -49,13 +49,19 @@ seasons and needs 5 people to help run the raffle.
 
 ## Development
 
-MVP Stage 1: Craigslist for volunteer opportunities. Build a 'digital bulletin
-board' for a church or community group. CRUD volunteer opportunities.
+MVP Stage 1: Craigslist for volunteer opportunities. Users can create accounts,
+then CRUD volunteer opportunities. Opportunities require a title, description,
+location, contact info, and time. Users can only edit their own posts, but they
+can view all.
 
-Stage 2: Commit (register) for volunteer opportunities. Request a certain number
-of people... users can offer to help... accept help.
+Stage 2: Filter posts by location. View posts that are within x miles of you or
+another specific location. Add tags to posts, filter by tags.
 
-Stage 3 and beyond: Calendar integration. Location. Recommendations. Social
+Stage 2: Users can commit (register) for volunteer opportunities. Post creators
+can Request a certain number of people... users can offer to help... creators
+can accept help.
+
+Stage 3 and beyond: Calendar integration. Recommendations, notifications. Social
 Media Features.
 
 ## Potential Features
