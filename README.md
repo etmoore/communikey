@@ -67,9 +67,9 @@ Media Features.
 ## Potential Features
 
 ### Calendar integration
-- You indicate when you're available on a calendar, highlighting blocks of time
-  you're free to help someone in need. Communikey notifies you when there are
-  opportunities during your free time.
+- Volunteers indicate when they're available on a calendar, highlighting blocks of time
+  they're free to help someone in need. Communikey notifies them when there are
+  opportunities during their free time.
 - When you 'commit' to a volunteer opportunity, it is added to your personal
   calendar.
 
@@ -77,16 +77,16 @@ Media Features.
 - Location - what's in walking distance? driving distance? etc.
 - Interests/causes listed in your profile people your friends have helped.
 - Services you are willing/able to render
+- Recieve notifications when someone in your area needs makes a post that
+  matches your preferences
 
 ### Admin features ($)
 
 ## Revenue
 - $1 per volunteer recruited through Communikey?  Hourly charge? $/person/hour?
-  Corporations could
-- sponsor Communikey over certain periods of time. "All requests for help are
+  Corporations could sponsor Communikey over certain periods of time. "All requests for help are
   free today thanks to Coca Cola."
-- Special admin features
-- branded communities
+- Branded communities
 - Promoted posts
 
 ## Managing Trust
