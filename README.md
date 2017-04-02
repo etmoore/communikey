@@ -99,3 +99,8 @@ Media Features.
 - Communikey could help ease the paperwork burden for schools and similar
   organizations that require background checks or onerous applications.
   - perhaps Communikey could offer a common application form?
+
+## Mockups
+
+### Post Index
+![Post Index Mockup](./mockups/post_index.png)
