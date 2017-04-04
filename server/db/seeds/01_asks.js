@@ -1,4 +1,4 @@
-module.exports = [
+const asks = [
   {
     id: 1,
     title: 'Moving Furniture',
@@ -25,3 +25,7 @@ module.exports = [
   },
 ];
 
+exports.seed = knex => (
+  knex('asks').del()
+    .then(() => knex('asks').insert(asks))
+);

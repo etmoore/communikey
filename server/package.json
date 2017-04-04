@@ -11,7 +11,9 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
-    "morgan": "~1.8.1"
+    "knex": "^0.12.9",
+    "morgan": "~1.8.1",
+    "pg": "^6.1.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",
