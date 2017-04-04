@@ -20,7 +20,7 @@ Those who survive the gauntlet are then asked to make weekly time commitments
 that can be hard to keep with busy, variable schedules. Because of the time and
 commitment required, many people who would like to volunteer don't.
 
-### Hypothesis: 
+### Hypothesis:
 **People would volunteer more if it were easier.**
 
 ### Goal:
@@ -37,7 +37,7 @@ difficult/awkward to request/offer help. If we knew _how_ we could
 help others, we'd do it more often.
 
 ### Example Volunteer Opportunities
-1. Sam, an 80 year-old neighbor needs help getting to and from the grocery 
+1. Sam, an 80 year-old neighbor needs help getting to and from the grocery
 store on Saturdays.
 1. Christie is moving apartments and could use help from a few able-bodied
 people moving heavy furniture for an hour.
@@ -102,5 +102,11 @@ Media Features.
 
 ## Mockups
 
-### Post Index
-![Post Index Mockup](./mockups/post_index.png)
+**Ask Index**
+![Ask Index Mockup](./mockups/ask_index.png)
+
+**New Ask**
+![New Ask Mockup](./mockups/new_ask.png)
+
+**View Ask and Offer Help**
+![Ask View Mockup](./mockups/ask_view.png)
