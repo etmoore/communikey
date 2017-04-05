@@ -74,10 +74,10 @@ Media Features.
   calendar.
 
 ### Recommendations
-- Location - what's in walking distance? driving distance? etc.
+- Location - what's in walking distance? Driving distance? Etc.
 - Interests/causes listed in your profile people your friends have helped.
 - Services you are willing/able to render
-- Recieve notifications when someone in your area needs makes a post that
+- Receive notifications when someone in your area needs makes a post that
   matches your preferences
 
 ### Admin features ($)
