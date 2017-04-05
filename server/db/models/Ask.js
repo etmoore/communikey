@@ -1,30 +1,30 @@
-const knex = require('../knex');
+const knex = require('../knex')
 
-function getAllAsks() {
-  return knex('asks').select();
+function getAllAsks () {
+  return knex('asks').select()
 }
 
-function getAsk(askID) {
+function getAsk (askID) {
   return knex('asks')
     .where('id', parseInt(askID, 10))
-    .first();
+    .first()
 }
 
-function createAsk(newAsk) {
+function createAsk (newAsk) {
   return knex('asks')
-    .insert(newAsk, 'id');
+    .insert(newAsk, 'id')
 }
 
-function updateAsk(askID, askData) {
-  return knex('asks')
-    .where('id', parseInt(askID, 10))
-    .update(askData, 'id');
-}
-
-function deleteAsk(askID) {
+function updateAsk (askID, askData) {
   return knex('asks')
     .where('id', parseInt(askID, 10))
-    .delete();
+    .update(askData, 'id')
+}
+
+function deleteAsk (askID) {
+  return knex('asks')
+    .where('id', parseInt(askID, 10))
+    .delete()
 }
 
 module.exports = {
@@ -32,5 +32,5 @@ module.exports = {
   getAsk,
   createAsk,
   updateAsk,
-  deleteAsk,
-};
+  deleteAsk
+}
