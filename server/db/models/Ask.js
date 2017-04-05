@@ -12,8 +12,13 @@ function createAsk(newAsk) {
   return knex('asks').insert(newAsk, 'id');
 }
 
+function updateAsk(askID, askData) {
+  return knex('asks').where('id', parseInt(askID, 10)).update(askData, 'id');
+}
+
 module.exports = {
   getAllAsks,
   getAsk,
   createAsk,
+  updateAsk,
 }

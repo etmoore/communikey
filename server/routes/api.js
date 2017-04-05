@@ -22,4 +22,11 @@ router.post('/asks', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.put('/asks/:id', (req, res, next) => {
+  Ask.updateAsk(req.params.id, req.body)
+    .then((id) => Ask.getAsk(id))
+    .then(updatedJob => res.json(updatedJob))
+    .catch(err => next(err));
+});
+
 module.exports = router;
