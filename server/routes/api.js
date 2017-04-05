@@ -24,9 +24,16 @@ router.post('/asks', (req, res, next) => {
 
 router.put('/asks/:id', (req, res, next) => {
   Ask.updateAsk(req.params.id, req.body)
-    .then((id) => Ask.getAsk(id))
+    .then(id => Ask.getAsk(id))
     .then(updatedJob => res.json(updatedJob))
     .catch(err => next(err));
 });
+
+router.delete('/asks/:id', (req, res, next) => {
+  Ask.deleteAsk(req.params.id)
+    .then(() => res.json({ status: 'success' }))
+    .catch(err => next(err));
+});
+
 
 module.exports = router;
