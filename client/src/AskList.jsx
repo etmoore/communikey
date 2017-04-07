@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
 class AskList extends Component {
+  formatDate (date) {
+    return moment(date).format('dddd, MMMM D, h:mm a')
+  }
   render () {
     const {asks} = this.props
     return (
@@ -24,8 +28,8 @@ class AskList extends Component {
                   <td>{ask.id}</td>
                   <td>{ask.title}</td>
                   <td>{ask.description}</td>
-                  <td>{ask.start.toString()}</td>
-                  <td>{ask.end.toString()}</td>
+                  <td>{this.formatDate(ask.start)}</td>
+                  <td>{this.formatDate(ask.end)}</td>
                   <td>{ask.location}</td>
                 </tr>
               ))
