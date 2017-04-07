@@ -6,7 +6,7 @@ class AskList extends Component {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
-    const {asks, toggleShowForm} = this.props
+    const {asks, toggleShowForm, deleteAsk} = this.props
     return (
       <div className='AskList'>
         <h1>Ask List</h1>
@@ -24,18 +24,26 @@ class AskList extends Component {
               <th>Start</th>
               <th>End</th>
               <th>Location</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {
               asks.map((ask, index) => (
-                <tr key={index}>
+                <tr key={ask.id}>
                   <td>{ask.id}</td>
                   <td>{ask.title}</td>
                   <td>{ask.description}</td>
                   <td>{this.formatDate(ask.start)}</td>
                   <td>{this.formatDate(ask.end)}</td>
                   <td>{ask.location}</td>
+                  <td>
+                    <button
+                      className='btn btn-danger'
+                      onClick={() => deleteAsk(ask.id)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))
             }

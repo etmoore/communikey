@@ -13,6 +13,7 @@ class App extends Component {
     this.toggleShowForm = this.toggleShowForm.bind(this)
     this.getAllAsks = this.getAllAsks.bind(this)
     this.createAsk = this.createAsk.bind(this)
+    this.deleteAsk = this.deleteAsk.bind(this)
   }
   componentWillMount () {
     this.getAllAsks()
@@ -32,6 +33,11 @@ class App extends Component {
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
+  deleteAsk (askID) {
+    axios.delete(`http://localhost:3000/api/v1/asks/${askID}`)
+      .then(() => this.getAllAsks())
+      .catch(err => console.error(err))
+  }
   toggleShowForm () {
     this.setState({
       showForm: !this.state.showForm
@@ -45,8 +51,9 @@ class App extends Component {
           showForm
             ? <AskForm createAsk={this.createAsk} />
             : <AskList
-              asks={asks}
-              toggleShowForm={this.toggleShowForm} />
+                asks={asks}
+                deleteAsk={this.deleteAsk}
+                toggleShowForm={this.toggleShowForm} />
         }
       </div>
     )
