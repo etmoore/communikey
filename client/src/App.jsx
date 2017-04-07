@@ -11,14 +11,25 @@ class App extends Component {
       showForm: false
     }
     this.toggleShowForm = this.toggleShowForm.bind(this)
+    this.getAllAsks = this.getAllAsks.bind(this)
+    this.createAsk = this.createAsk.bind(this)
   }
   componentWillMount () {
+    this.getAllAsks()
+  }
+  getAllAsks () {
     axios.get('http://localhost:3000/api/v1/asks')
       .then((res) => {
         this.setState({
           asks: res.data
         })
       })
+      .catch(err => console.error(err))
+  }
+  createAsk (askData) {
+    axios.post('http://localhost:3000/api/v1/asks', askData)
+      .then(() => this.toggleShowForm())
+      .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
   toggleShowForm () {
@@ -32,8 +43,10 @@ class App extends Component {
       <div className='App container'>
         {
           showForm
-            ? <AskForm />
-            : <AskList asks={asks} toggleShowForm={this.toggleShowForm} />
+            ? <AskForm createAsk={this.createAsk} />
+            : <AskList
+              asks={asks}
+              toggleShowForm={this.toggleShowForm} />
         }
       </div>
     )

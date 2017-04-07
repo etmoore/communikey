@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
 class AskForm extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      title: '',
-      description: '',
-      start: '',
-      end: '',
-      location: ''
+      title: 'new title',
+      description: 'new description',
+      start: moment().format('YYYY-MM-DDTHH:mm'),
+      end: moment().add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+      location: 'location, pl'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.saveAsk = this.saveAsk.bind(this)
   }
   handleInputChange (event) {
     const target = event.target
@@ -22,29 +24,35 @@ class AskForm extends Component {
       [name]: value
     })
   }
+  saveAsk (event) {
+    event.preventDefault()
+    const askData = this.state
+    this.props.createAsk(askData)
+  }
   render () {
     const {title, description, start, end, location} = this.state
     return (
       <div>
         <h1>Ask Form</h1>
-        <form>
+        <form onSubmit={this.saveAsk}>
           <div className='form-group'>
             <label htmlFor='title'>Title</label>
             <input
               type='text'
               name='title'
-              className='form-control'
               id='title'
-              value={title}
+              className='form-control'
+              defaultValue={title}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
             <label htmlFor='description'>Description</label>
             <textarea
-              className='form-control'
               name='description'
-              rows='3' id='description'
-              value={description}
+              id='description'
+              className='form-control'
+              rows='3'
+              defaultValue={description}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -52,9 +60,9 @@ class AskForm extends Component {
             <input
               type='datetime-local'
               name='start'
-              className='form-control'
               id='start'
-              value={start}
+              className='form-control'
+              defaultValue={start}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -62,9 +70,9 @@ class AskForm extends Component {
             <input
               type='datetime-local'
               name='end'
-              className='form-control'
               id='end'
-              value={end}
+              className='form-control'
+              defaultValue={end}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -72,11 +80,16 @@ class AskForm extends Component {
             <input
               type='location'
               name='location'
-              className='form-control'
               id='location'
-              value={location}
+              className='form-control'
+              defaultValue={location}
               onChange={this.handleInputChange} />
           </div>
+          <button
+            className='btn btn-success'
+            type='submit'>
+            Save Ask
+          </button>
         </form>
       </div>
 
