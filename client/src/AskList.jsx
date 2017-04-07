@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 class AskList extends Component {
   formatDate (date) {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
-    const {asks, toggleShowForm, deleteAsk} = this.props
+    const {asks, deleteAsk} = this.props
     return (
       <div className='AskList'>
         <h1>Ask List</h1>
-        <button
-          className='btn btn-primary'
-          onClick={toggleShowForm}>
+        <Link
+          to='/new'
+          className='btn btn-primary'>
           New Ask
-        </button>
+        </Link>
         <table className='table table-striped'>
           <thead>
             <tr>

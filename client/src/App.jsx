@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import axios from 'axios'
 import AskList from './AskList'
 import AskForm from './AskForm'
@@ -7,10 +8,8 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      asks: [],
-      showForm: false
+      asks: []
     }
-    this.toggleShowForm = this.toggleShowForm.bind(this)
     this.getAllAsks = this.getAllAsks.bind(this)
     this.createAsk = this.createAsk.bind(this)
     this.deleteAsk = this.deleteAsk.bind(this)
@@ -19,7 +18,7 @@ class App extends Component {
     this.getAllAsks()
   }
   getAllAsks () {
-    axios.get('http://localhost:3000/api/v1/asks')
+    return axios.get('http://localhost:3000/api/v1/asks')
       .then((res) => {
         this.setState({
           asks: res.data
@@ -28,34 +27,31 @@ class App extends Component {
       .catch(err => console.error(err))
   }
   createAsk (askData) {
-    axios.post('http://localhost:3000/api/v1/asks', askData)
-      .then(() => this.toggleShowForm())
+    return axios.post('http://localhost:3000/api/v1/asks', askData)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
   deleteAsk (askID) {
-    axios.delete(`http://localhost:3000/api/v1/asks/${askID}`)
+    return axios.delete(`http://localhost:3000/api/v1/asks/${askID}`)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
-  toggleShowForm () {
-    this.setState({
-      showForm: !this.state.showForm
-    })
-  }
   render () {
-    const {asks, showForm} = this.state
+    const {asks} = this.state
     return (
-      <div className='App container'>
-        {
-          showForm
-            ? <AskForm createAsk={this.createAsk} />
-            : <AskList
-                asks={asks}
-                deleteAsk={this.deleteAsk}
-                toggleShowForm={this.toggleShowForm} />
-        }
-      </div>
+      <Router>
+        <div className='App container'>
+          <Route exact path='/' render={() => (
+            <AskList
+              asks={asks}
+              deleteAsk={this.deleteAsk}
+              toggleShowForm={this.toggleShowForm} />
+          )} />
+          <Route path='/new' render={() => (
+            <AskForm createAsk={this.createAsk} />
+          )} />
+        </div>
+      </Router>
     )
   }
 }

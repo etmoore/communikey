@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 class AskForm extends Component {
   constructor (props) {
     super(props)
-
     this.state = {
       title: 'new title',
       description: 'new description',
@@ -25,7 +25,6 @@ class AskForm extends Component {
     })
   }
   saveAsk (event) {
-    event.preventDefault()
     const askData = this.state
     this.props.createAsk(askData)
   }
@@ -34,7 +33,7 @@ class AskForm extends Component {
     return (
       <div>
         <h1>Ask Form</h1>
-        <form onSubmit={this.saveAsk}>
+        <form>
           <div className='form-group'>
             <label htmlFor='title'>Title</label>
             <input
@@ -85,11 +84,12 @@ class AskForm extends Component {
               defaultValue={location}
               onChange={this.handleInputChange} />
           </div>
-          <button
+          <Link
+            to='/'
             className='btn btn-success'
-            type='submit'>
+            onClick={this.saveAsk}>
             Save Ask
-          </button>
+          </Link>
         </form>
       </div>
 
