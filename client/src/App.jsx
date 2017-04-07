@@ -33,7 +33,7 @@ class App extends Component {
         {
           showForm
             ? <AskForm />
-            : <AskList asks={asks} toggleShowForm={this.toggleShowForm}/>
+            : <AskList asks={asks} toggleShowForm={this.toggleShowForm} />
         }
       </div>
     )
