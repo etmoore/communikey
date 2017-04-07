@@ -21,7 +21,7 @@ class App extends Component {
   render () {
     const {asks} = this.state
     return (
-      <div className='App'>
+      <div className='App container'>
         <AskList asks={asks} />
       </div>
     )

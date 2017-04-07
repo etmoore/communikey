@@ -6,7 +6,7 @@ class AskList extends Component {
     return (
       <div className='AskList'>
         <h1>Ask List</h1>
-        <table className='table'>
+        <table className='table table-striped'>
           <thead>
             <tr>
               <th>ID</th>
