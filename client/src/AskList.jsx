@@ -6,10 +6,15 @@ class AskList extends Component {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
-    const {asks} = this.props
+    const {asks, toggleShowForm} = this.props
     return (
       <div className='AskList'>
         <h1>Ask List</h1>
+        <button
+          className='btn btn-primary'
+          onClick={toggleShowForm}>
+          New Ask
+        </button>
         <table className='table table-striped'>
           <thead>
             <tr>
