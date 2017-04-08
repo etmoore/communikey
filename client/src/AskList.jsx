@@ -10,7 +10,7 @@ class AskList extends Component {
     const {asks, deleteAsk} = this.props
     return (
       <div className='AskList'>
-        <h1>Ask List</h1>
+        <h1>Communikey 🔑</h1>
         <Link
           to='/new'
           className='btn btn-primary'>
@@ -25,8 +25,8 @@ class AskList extends Component {
               <th>Start</th>
               <th>End</th>
               <th>Location</th>
-              <th></th>
-              <th></th>
+              <th />
+              <th />
             </tr>
           </thead>
           <tbody>
