@@ -29,7 +29,7 @@ describe('API Routes', function () {
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('array')
-          res.body.length.should.equal(100)
+          res.body.length.should.equal(3)
           res.body[0].should.have.property('id')
           res.body[0].should.have.property('title')
           res.body[0].should.have.property('description')
@@ -45,8 +45,6 @@ describe('API Routes', function () {
       chai.request(server)
         .get('/api/v1/asks/1')
         .end((err, res) => {
-          var a = 1
-          a.should.equal(2)
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('object')
@@ -135,4 +133,17 @@ describe('API Routes', function () {
       })
     })
   })
+  describe('POST /api/v1/register', () => {
+    it('registers a new user', (done) => {
+      chai.request(server)
+        .post('/api/v1/register')
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.token.should.be.string
+          res.body.status.should.equal('success')
+          done()
+        })
+    })
+  })
+  xdescribe('POST /api/v1/login', () => {})
 })
