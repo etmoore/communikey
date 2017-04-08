@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "test": "./node_modules/mocha/bin/mocha './test/*.spec.js'"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
