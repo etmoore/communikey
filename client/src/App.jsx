@@ -52,13 +52,14 @@ class App extends Component {
             render={() => (
               <AskList
                 asks={asks}
-                deleteAsk={this.deleteAsk}
-                toggleShowForm={this.toggleShowForm} />
+                deleteAsk={this.deleteAsk} />
             )} />
           <Route
             path='/new'
             render={() => (
-              <AskForm saveAsk={this.createAsk} />
+              <AskForm
+                askID={null}
+                saveAsk={this.createAsk} />
             )} />
           <Route
             path='/edit/:id'
