@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 class AskList extends Component {
   formatDate (date) {
@@ -26,6 +26,7 @@ class AskList extends Component {
               <th>End</th>
               <th>Location</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +45,13 @@ class AskList extends Component {
                       onClick={() => deleteAsk(ask.id)}>
                       Delete
                     </button>
+                  </td>
+                  <td>
+                    <Link
+                      to={`/edit/${ask.id}`}
+                      className='btn btn-secondary'>
+                      Edit
+                    </Link>
                   </td>
                 </tr>
               ))

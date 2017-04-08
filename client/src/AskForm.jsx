@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
+import axios from 'axios'
 
 class AskForm extends Component {
   constructor (props) {
@@ -13,7 +14,26 @@ class AskForm extends Component {
       location: 'location, pl'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.saveAsk = this.saveAsk.bind(this)
+    this.getAsk = this.getAsk.bind(this)
+  }
+  componentWillMount () {
+    if (this.props.askID) {
+      this.getAsk(this.props.askID)
+    }
+  }
+  getAsk (askID) {
+    axios.get(`http://localhost:3000/api/v1/asks/${askID}`)
+      .then((res) => {
+        const {title, description, start, end, location} = res.data
+        this.setState({
+          title,
+          description,
+          start: moment(start).format('YYYY-MM-DDTHH:mm'),
+          end: moment(end).format('YYYY-MM-DDTHH:mm'),
+          location
+        })
+      })
+      .catch(err => console.log(err))
   }
   handleInputChange (event) {
     const target = event.target
@@ -24,12 +44,9 @@ class AskForm extends Component {
       [name]: value
     })
   }
-  saveAsk (event) {
-    const askData = this.state
-    this.props.createAsk(askData)
-  }
   render () {
     const {title, description, start, end, location} = this.state
+    const {saveAsk, askID} = this.props
     return (
       <div>
         <h1>Ask Form</h1>
@@ -39,19 +56,17 @@ class AskForm extends Component {
             <input
               type='text'
               name='title'
-              id='title'
               className='form-control'
-              defaultValue={title}
+              value={title}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
             <label htmlFor='description'>Description</label>
             <textarea
               name='description'
-              id='description'
               className='form-control'
               rows='3'
-              defaultValue={description}
+              value={description}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -59,9 +74,8 @@ class AskForm extends Component {
             <input
               type='datetime-local'
               name='start'
-              id='start'
               className='form-control'
-              defaultValue={start}
+              value={start}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -69,9 +83,8 @@ class AskForm extends Component {
             <input
               type='datetime-local'
               name='end'
-              id='end'
               className='form-control'
-              defaultValue={end}
+              value={end}
               onChange={this.handleInputChange} />
           </div>
           <div className='form-group'>
@@ -79,20 +92,18 @@ class AskForm extends Component {
             <input
               type='location'
               name='location'
-              id='location'
               className='form-control'
-              defaultValue={location}
+              value={location}
               onChange={this.handleInputChange} />
           </div>
           <Link
             to='/'
             className='btn btn-success'
-            onClick={this.saveAsk}>
+            onClick={() => saveAsk(this.state, askID)}>
             Save Ask
           </Link>
         </form>
       </div>
-
     )
   }
 }

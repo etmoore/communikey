@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import React, {Component} from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import axios from 'axios'
 import AskList from './AskList'
 import AskForm from './AskForm'
@@ -12,6 +12,7 @@ class App extends Component {
     }
     this.getAllAsks = this.getAllAsks.bind(this)
     this.createAsk = this.createAsk.bind(this)
+    this.updateAsk = this.updateAsk.bind(this)
     this.deleteAsk = this.deleteAsk.bind(this)
   }
   componentWillMount () {
@@ -31,6 +32,11 @@ class App extends Component {
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
+  updateAsk (askData, askID) {
+    return axios.put(`http://localhost:3000/api/v1/asks/${askID}`, askData)
+      .then(() => this.getAllAsks())
+      .catch(err => console.error(err))
+  }
   deleteAsk (askID) {
     return axios.delete(`http://localhost:3000/api/v1/asks/${askID}`)
       .then(() => this.getAllAsks())
@@ -41,15 +47,26 @@ class App extends Component {
     return (
       <Router>
         <div className='App container'>
-          <Route exact path='/' render={() => (
-            <AskList
-              asks={asks}
-              deleteAsk={this.deleteAsk}
-              toggleShowForm={this.toggleShowForm} />
-          )} />
-          <Route path='/new' render={() => (
-            <AskForm createAsk={this.createAsk} />
-          )} />
+          <Route
+            exact path='/'
+            render={() => (
+              <AskList
+                asks={asks}
+                deleteAsk={this.deleteAsk}
+                toggleShowForm={this.toggleShowForm} />
+            )} />
+          <Route
+            path='/new'
+            render={() => (
+              <AskForm saveAsk={this.createAsk} />
+            )} />
+          <Route
+            path='/edit/:id'
+            render={({match}) => (
+              <AskForm
+                askID={match.params.id}
+                saveAsk={this.updateAsk} />
+            )} />
         </div>
       </Router>
     )
