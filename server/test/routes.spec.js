@@ -7,25 +7,26 @@ const server = require('../app')
 const knex = require('../db/knex')
 const Ask = require('../db/models/Ask')
 
-chai.should()
+const should = chai.should()
 chai.use(chaiHttp)
 
 describe('API Routes', function () {
-  beforeEach(() => (
-    knex.migrate.rollback()
-    .then(() => knex.migrate.latest())
-    .then(() => knex.seed.run())
-  ))
+  beforeEach(() => {
+    return knex.migrate.rollback()
+      .then(() => knex.migrate.latest())
+      .then(() => knex.seed.run())
+  })
 
-  afterEach(() => (
-    knex.migrate.rollback()
-  ))
+  afterEach(() => {
+    return knex.migrate.rollback()
+  })
 
+  /* ASK Routes */
   describe('GET /api/v1/asks', function () {
-    it('should return all asks', function (done) {
-      chai.request(server)
+    it('should return all asks', function () {
+      return chai.request(server)
         .get('/api/v1/asks')
-        .end((err, res) => {
+        .then((res) => {
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('array')
@@ -36,15 +37,15 @@ describe('API Routes', function () {
           res.body[0].should.have.property('start')
           res.body[0].should.have.property('end')
           res.body[0].should.have.property('location')
-          done()
         })
     })
   })
+
   describe('GET /api/v1/asks/:id', () => {
-    it('should return an ask matching the path id', (done) => {
-      chai.request(server)
+    it('should return an ask matching the path id', () => {
+      return chai.request(server)
         .get('/api/v1/asks/1')
-        .end((err, res) => {
+        .then((res) => {
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('object')
@@ -54,13 +55,13 @@ describe('API Routes', function () {
           res.body.should.have.property('start')
           res.body.should.have.property('end')
           res.body.should.have.property('location')
-          done()
         })
     })
   })
+
   describe('POST /api/v1/asks/', () => {
-    it('create a new ask', (done) => {
-      chai.request(server)
+    it('create a new ask', () => {
+      return chai.request(server)
         .post('/api/v1/asks/')
         .send({
           title: 'Help needed',
@@ -69,7 +70,7 @@ describe('API Routes', function () {
           end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
           location: 'Pittsburgh, PA'
         })
-        .end((err, res) => {
+        .then((res) => {
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('object')
@@ -81,16 +82,16 @@ describe('API Routes', function () {
           res.body.should.have.property('start')
           res.body.should.have.property('end')
           res.body.should.have.property('location')
-          done()
         })
     })
   })
+
   describe('PUT /api/v1/asks/:id', () => {
-    it('update an ask', (done) => {
-      Ask.getAllAsks()
+    it('update an ask', () => {
+      return Ask.getAllAsks()
         .then((asks) => {
           const ask = asks[0]
-          chai.request(server)
+          return chai.request(server)
             .put(`/api/v1/asks/${ask.id}`)
             .send({
               title: 'Help needed',
@@ -99,51 +100,58 @@ describe('API Routes', function () {
               end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
               location: 'Pittsburgh, PA'
             })
-            .end((err, res) => {
-              res.should.have.status(200)
-              res.should.be.json
-              res.body.should.be.a('object')
-              res.body.should.have.property('id')
-              res.body.should.have.property('title')
-              res.body.title.should.equal('Help needed')
-              res.body.should.have.property('description')
-              res.body.description.should.equal('Please consider lending a hand')
-              res.body.should.have.property('start')
-              res.body.should.have.property('end')
-              res.body.should.have.property('location')
-              done()
-            })
         })
-        .catch(err => console.log(err))
-    })
-  })
-  describe('DELETE /api/v1/asks/:id', () => {
-    it('delete an ask', (done) => {
-      Ask.getAllAsks().then((asks) => {
-        const beforeCount = asks.length
-        chai.request(server)
-          .delete(`/api/v1/asks/1`)
-          .end((err, res) => {
-            res.body.status.should.equal('success')
-            Ask.getAllAsks().then((asks) => {
-              asks.length.should.equal(beforeCount - 1)
-              done()
-            })
-          })
-      })
-    })
-  })
-  describe('POST /api/v1/register', () => {
-    it('registers a new user', (done) => {
-      chai.request(server)
-        .post('/api/v1/register')
-        .end((err, res) => {
+        .then((res) => {
           res.should.have.status(200)
-          res.body.token.should.be.string
-          res.body.status.should.equal('success')
-          done()
+          res.should.be.json
+          res.body.should.be.a('object')
+          res.body.should.have.property('id')
+          res.body.should.have.property('title')
+          res.body.title.should.equal('Help needed')
+          res.body.should.have.property('description')
+          res.body.description.should.equal('Please consider lending a hand')
+          res.body.should.have.property('start')
+          res.body.should.have.property('end')
+          res.body.should.have.property('location')
         })
     })
   })
-  xdescribe('POST /api/v1/login', () => {})
+
+  describe('DELETE /api/v1/asks/:id', () => {
+    it('delete an ask', () => {
+      let beforeCount
+      return Ask.getAllAsks()
+        .then((asks) => {
+          beforeCount = asks.length
+          return chai.request(server).delete(`/api/v1/asks/1`)
+        })
+        .then((res) => {
+          res.body.status.should.equal('success')
+          return Ask.getAllAsks()
+        })
+        .then((asks) => {
+          asks.length.should.equal(beforeCount - 1)
+        })
+    })
+  })
+
+  /* AUTH Routes */
+  describe('POST /api/v1/auth/register', () => {
+    it('registers a new user', () => {
+      return chai.request(server)
+        .post('/api/v1/auth/register')
+        .send({
+          firstName: 'Bob',
+          lastName: 'Fink',
+          email: 'bob@example.com',
+          password: 'password'
+        })
+        .then((res) => {
+          res.status.should.equal(200)
+          res.should.be.json
+          res.body.should.include.keys('status', 'token')
+          res.body.status.should.eql('success')
+        })
+    })
+  })
 })
