@@ -13,9 +13,12 @@
     "chai-as-promised": "^6.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "dotenv": "^4.0.0",
     "express": "~4.15.2",
+    "jsonwebtoken": "^7.3.0",
     "knex": "^0.12.9",
     "mock-knex": "^0.3.8",
+    "moment": "^2.18.1",
     "morgan": "~1.8.1",
     "pg": "^6.1.5"
   },
