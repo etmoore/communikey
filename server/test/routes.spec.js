@@ -154,4 +154,7 @@ describe('API Routes', function () {
         })
     })
   })
+
+  xdescribe('POST /api/v1/auth/login', () => {})
+  xdescribe('POST /api/v1/auth/logout', () => {}) // POST?
 })

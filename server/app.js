@@ -4,9 +4,12 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
-const apiRoutes = require('./routes/api')
+const asksRoutes = require('./routes/asks')
+const authRoutes = require('./routes/auth')
 
 const app = express()
+
+require('dotenv').config()
 
 // CORS Configuration
 app.use((req, res, next) => {
@@ -22,7 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/api/v1', apiRoutes)
+app.use('/api/v1/asks', asksRoutes)
+app.use('/api/v1/auth', authRoutes)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
