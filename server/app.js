@@ -37,9 +37,12 @@ app.use((req, res, next) => {
 })
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(err.status || 500)
-  res.json({ error: err })
+  res.json({
+    status: 'error',
+    error: err
+  })
 })
 
 module.exports = app

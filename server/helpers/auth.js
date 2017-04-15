@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt')
 const moment = require('moment')
 
 function comparePasswords (userPw, dbPw) {
-  return bcrypt.compareSync(userPw, dbPw)
+  if (bcrypt.compareSync(userPw, dbPw)) return true
+  else throw new Error('invalid credentials')
 }
 
 function hashPassword (pw) {

@@ -21,7 +21,9 @@ describe('API Routes', function () {
     return knex.migrate.rollback()
   })
 
+  /**************/
   /* ASK Routes */
+  /**************/
   describe('GET /api/v1/asks', function () {
     it('should return all asks', function () {
       return chai.request(server)
@@ -135,7 +137,9 @@ describe('API Routes', function () {
     })
   })
 
+  /***************/
   /* AUTH Routes */
+  /***************/
   describe('POST /api/v1/auth/register', () => {
     it('registers a new user', () => {
       return chai.request(server)
@@ -155,6 +159,38 @@ describe('API Routes', function () {
     })
   })
 
-  xdescribe('POST /api/v1/auth/login', () => {})
+  describe('POST /api/v1/auth/login', () => {
+    it('should login a user', () => {
+      return chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'testuser@example.com',
+          password: 'testuser123'
+        })
+        .then((res) => {
+          res.redirects.length.should.eql(0)
+          res.status.should.eql(200)
+          res.should.be.json
+          res.body.should.include.keys('status', 'token')
+          res.body.status.should.eql('success')
+          res.body.token.should.be.a('string')
+        })
+    })
+    it('should not login an unregistered user', (done) => {
+      chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'baduser@example.com',
+          password: 'testuser123'
+        })
+        .end((err, res) => {
+          should.exist(err)
+          res.status.should.eql(500)
+          res.should.be.json
+          res.body.status.should.eql('error')
+          done()
+        })
+    })
+  })
   xdescribe('POST /api/v1/auth/logout', () => {}) // POST?
 })

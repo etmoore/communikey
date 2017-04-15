@@ -1,8 +1,12 @@
 const knex = require('../knex')
 const authHelpers = require('../../helpers/auth')
 
-function getUser (userID) {
-  return knex('users').where('id', userID)
+function getUserByID (id) {
+  return knex('users').where('id', id).first()
+}
+
+function getUserByEmail (email) {
+  return knex('users').where('email', email).first()
 }
 
 function createUser (userData) {
@@ -11,6 +15,7 @@ function createUser (userData) {
 }
 
 module.exports = {
-  getUser,
+  getUserByID,
+  getUserByEmail,
   createUser
 }
