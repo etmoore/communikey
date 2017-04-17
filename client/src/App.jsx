@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import axios from 'axios'
 import AskList from './AskList'
 import AskForm from './AskForm'
+import RegistrationForm from './RegistrationForm'
 
 class App extends Component {
   constructor (props) {
@@ -68,6 +69,9 @@ class App extends Component {
                 askID={match.params.id}
                 saveAsk={this.updateAsk} />
             )} />
+          <Route
+            path='/register'
+            component={RegistrationForm} />
         </div>
       </Router>
     )
