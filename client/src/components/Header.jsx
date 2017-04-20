@@ -14,6 +14,7 @@ class Header extends Component {
         <Link to='/login' className='btn btn-primary'>Login</Link>
       </div>
     )
+    const {isAuthenticated} = this.props
     return (
       <div className='header row text-center align-bottom'>
         <div className='col-sm-3'>
@@ -27,7 +28,7 @@ class Header extends Component {
           <h1>Communikey 🔑</h1>
         </div>
         <div className='col-sm-3'>
-          {guestLinks}
+          {isAuthenticated ? userLinks : guestLinks}
         </div>
       </div>
     )

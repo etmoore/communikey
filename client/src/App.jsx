@@ -11,7 +11,8 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      asks: []
+      asks: [],
+      isAuthenticated: false
     }
     this.getAllAsks = this.getAllAsks.bind(this)
     this.createAsk = this.createAsk.bind(this)
@@ -19,9 +20,16 @@ class App extends Component {
     this.deleteAsk = this.deleteAsk.bind(this)
     this.registerUser = this.registerUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
+    this.setIsAuthenticated = this.setIsAuthenticated.bind(this)
   }
   componentWillMount () {
     this.getAllAsks()
+    this.setIsAuthenticated()
+  }
+  setIsAuthenticated () {
+    this.setState({
+      isAuthenticated: !!window.localStorage.getItem('authToken')
+    })
   }
   getAllAsks () {
     return axios.get('http://localhost:3000/api/v1/asks')
@@ -57,16 +65,16 @@ class App extends Component {
   loginUser (userData) {
     return axios.post('http://localhost:3000/api/v1/auth/login', userData)
       .then((res) => {
-        localStorage.setItem('authToken', res.data.token)
+        window.localStorage.setItem('authToken', res.data.token)
       })
       .catch(err => console.error(err))
   }
   render () {
-    const {asks} = this.state
+    const {asks, isAuthenticated} = this.state
     return (
       <Router>
         <div className='App container'>
-          <Header />
+          <Header isAuthenticated={isAuthenticated}/>
           <Route exact path='/' render={() => (
             <AskIndex
               asks={asks}
