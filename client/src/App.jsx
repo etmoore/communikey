@@ -20,6 +20,7 @@ class App extends Component {
     this.deleteAsk = this.deleteAsk.bind(this)
     this.registerUser = this.registerUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
+    this.logoutUser = this.logoutUser.bind(this)
     this.setIsAuthenticated = this.setIsAuthenticated.bind(this)
   }
   componentWillMount () {
@@ -69,12 +70,21 @@ class App extends Component {
       })
       .catch(err => console.error(err))
   }
+  logoutUser () {
+    console.log('logout firing');
+    window.localStorage.clear()
+    this.setState({
+      isAuthenticated: false
+    })
+  }
   render () {
     const {asks, isAuthenticated} = this.state
     return (
       <Router>
         <div className='App container'>
-          <Header isAuthenticated={isAuthenticated}/>
+          <Header
+            logoutUser={this.logoutUser}
+            isAuthenticated={isAuthenticated}/>
           <Route exact path='/' render={() => (
             <AskIndex
               asks={asks}

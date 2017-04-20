@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom'
 
 class Header extends Component {
   render () {
+    const {isAuthenticated, logoutUser} = this.props
     const userLinks = (
       <ul>
-        <li className='btn btn-primary'>Logout</li>
+        <li className='btn btn-primary' onClick={logoutUser}>Logout</li>
       </ul>
     )
     const guestLinks = (
@@ -14,7 +15,6 @@ class Header extends Component {
         <Link to='/login' className='btn btn-primary'>Login</Link>
       </div>
     )
-    const {isAuthenticated} = this.props
     return (
       <div className='header row text-center align-bottom'>
         <div className='col-sm-3'>
