@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
 
-class RegistrationForm extends Component {
+class LoginForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      firstName: 'Sharla',
-      lastName: 'Castro',
-      email: 'sharla@example.com',
-      password: 'challenger'
+      email: '',
+      password: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this)
   }
@@ -20,49 +18,17 @@ class RegistrationForm extends Component {
     })
   }
   render () {
-    const {firstName, lastName, email, password} = this.state
-    const {registerUser} = this.props
+    const {email, password} = this.state
+    const {loginUser} = this.props
     return (
-      <div>
-        <h1>Register</h1>
+      <div className='login-form'>
+        <h1>Login</h1>
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            registerUser(this.state)
+            loginUser(this.state)
           }}
           className='form-horizontal'>
-          <div className='form-group'>
-            <label
-              htmlFor='firstName'
-              className='col-sm-2 control-label'>
-              First Name
-            </label>
-            <div className='col-sm-10'>
-              <input
-                type='text'
-                className='form-control'
-                id='firstName'
-                name='firstName'
-                value={firstName}
-                onChange={this.handleInputChange} />
-            </div>
-          </div>
-          <div className='form-group'>
-            <label
-              htmlFor='lastName'
-              className='col-sm-2 control-label'>
-              Last Name
-            </label>
-            <div className='col-sm-10'>
-              <input
-                type='text'
-                className='form-control'
-                id='lastName'
-                name='lastName'
-                value={lastName}
-                onChange={this.handleInputChange} />
-            </div>
-          </div>
           <div className='form-group'>
             <label
               htmlFor='email'
@@ -100,7 +66,7 @@ class RegistrationForm extends Component {
               <button
                 type='submit'
                 className='btn btn-default'>
-                Sign up
+                Log In
               </button>
             </div>
           </div>
@@ -110,4 +76,4 @@ class RegistrationForm extends Component {
   }
 }
 
-export default RegistrationForm
+export default LoginForm

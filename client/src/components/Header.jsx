@@ -9,9 +9,9 @@ class Header extends Component {
       </ul>
     )
     const guestLinks = (
-      <div class='guestLinks'>
+      <div className='guestLinks'>
         <Link to='/register' className='btn btn-primary'>Sign up</Link>
-        <Link to='/' className='btn btn-primary'>Login</Link>
+        <Link to='/login' className='btn btn-primary'>Login</Link>
       </div>
     )
     return (

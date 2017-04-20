@@ -5,6 +5,7 @@ import Header from './components/Header'
 import AskIndex from './components/AskIndex'
 import AskForm from './components/AskForm'
 import RegistrationForm from './components/RegistrationForm'
+import LoginForm from './components/LoginForm'
 
 class App extends Component {
   constructor (props) {
@@ -17,6 +18,7 @@ class App extends Component {
     this.updateAsk = this.updateAsk.bind(this)
     this.deleteAsk = this.deleteAsk.bind(this)
     this.registerUser = this.registerUser.bind(this)
+    this.loginUser = this.loginUser.bind(this)
   }
   componentWillMount () {
     this.getAllAsks()
@@ -52,6 +54,13 @@ class App extends Component {
       })
       .catch(err => console.error(err))
   }
+  loginUser (userData) {
+    return axios.post('http://localhost:3000/api/v1/auth/login', userData)
+      .then((res) => {
+        localStorage.setItem('authToken', res.data.token)
+      })
+      .catch(err => console.error(err))
+  }
   render () {
     const {asks} = this.state
     return (
@@ -75,6 +84,9 @@ class App extends Component {
           )} />
           <Route path='/register' render={() => (
             <RegistrationForm registerUser={this.registerUser} />
+          )} />
+          <Route path='/login' render={() => (
+            <LoginForm loginUser={this.loginUser} />
           )} />
         </div>
       </Router>
