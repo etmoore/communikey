@@ -10,17 +10,6 @@ class AskIndex extends Component {
     const {asks, deleteAsk} = this.props
     return (
       <div className='AskIndex'>
-        <h1>Communikey 🔑</h1>
-        <Link
-          to='/new'
-          className='btn btn-primary'>
-          New Ask
-        </Link>
-        <Link
-          to='/register'
-          className='btn btn-primary'>
-          Register
-        </Link>
         <table className='table table-striped'>
           <thead>
             <tr>

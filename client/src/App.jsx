@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import axios from 'axios'
-import AskIndex from './AskIndex'
-import AskForm from './AskForm'
-import RegistrationForm from './RegistrationForm'
+import Header from './components/Header'
+import AskIndex from './components/AskIndex'
+import AskForm from './components/AskForm'
+import RegistrationForm from './components/RegistrationForm'
 
 class App extends Component {
   constructor (props) {
@@ -56,6 +57,7 @@ class App extends Component {
     return (
       <Router>
         <div className='App container'>
+          <Header />
           <Route exact path='/' render={() => (
             <AskIndex
               asks={asks}
