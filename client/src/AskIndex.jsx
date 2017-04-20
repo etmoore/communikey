@@ -2,19 +2,24 @@ import React, {Component} from 'react'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 
-class AskList extends Component {
+class AskIndex extends Component {
   formatDate (date) {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
     const {asks, deleteAsk} = this.props
     return (
-      <div className='AskList'>
+      <div className='AskIndex'>
         <h1>Communikey 🔑</h1>
         <Link
           to='/new'
           className='btn btn-primary'>
           New Ask
+        </Link>
+        <Link
+          to='/register'
+          className='btn btn-primary'>
+          Register
         </Link>
         <table className='table table-striped'>
           <thead>
@@ -63,4 +68,4 @@ class AskList extends Component {
   }
 }
 
-export default AskList
+export default AskIndex
