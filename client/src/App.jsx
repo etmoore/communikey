@@ -1,5 +1,9 @@
 import React, {Component} from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect
+} from 'react-router-dom'
 import axios from 'axios'
 import Header from './components/Header'
 import AskIndex from './components/AskIndex'
@@ -21,13 +25,9 @@ class App extends Component {
     this.registerUser = this.registerUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
     this.logoutUser = this.logoutUser.bind(this)
-    this.setIsAuthenticated = this.setIsAuthenticated.bind(this)
   }
   componentWillMount () {
     this.getAllAsks()
-    this.setIsAuthenticated()
-  }
-  setIsAuthenticated () {
     this.setState({
       isAuthenticated: !!window.localStorage.getItem('authToken')
     })
@@ -60,6 +60,7 @@ class App extends Component {
     return axios.post('http://localhost:3000/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
+        this.setState({ isAuthenticated: true })
       })
       .catch(err => console.error(err))
   }
@@ -67,15 +68,14 @@ class App extends Component {
     return axios.post('http://localhost:3000/api/v1/auth/login', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
+        this.setState({ isAuthenticated: true })
       })
       .catch(err => console.error(err))
   }
   logoutUser () {
-    console.log('logout firing');
+    console.log('logout firing')
     window.localStorage.clear()
-    this.setState({
-      isAuthenticated: false
-    })
+    this.setState({ isAuthenticated: false })
   }
   render () {
     const {asks, isAuthenticated} = this.state
@@ -84,16 +84,16 @@ class App extends Component {
         <div className='App container'>
           <Header
             logoutUser={this.logoutUser}
-            isAuthenticated={isAuthenticated}/>
+            isAuthenticated={isAuthenticated} />
           <Route exact path='/' render={() => (
             <AskIndex
               asks={asks}
               deleteAsk={this.deleteAsk} />
           )} />
           <Route path='/new' render={() => (
-            <AskForm
-              askID={null}
-              saveAsk={this.createAsk} />
+            isAuthenticated
+              ? <AskForm askID={null} saveAsk={this.createAsk} />
+              : <Redirect to='/login' />
           )} />
           <Route path='/edit/:id' render={({match}) => (
             <AskForm
