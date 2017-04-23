@@ -6,6 +6,7 @@ const chaiHttp = require('chai-http')
 const server = require('../app')
 const knex = require('../db/knex')
 const Ask = require('../db/models/Ask')
+const User = require('../db/models/User')
 
 const should = chai.should()
 chai.use(chaiHttp)
@@ -39,6 +40,7 @@ describe('API Routes', function () {
           res.body[0].should.have.property('start')
           res.body[0].should.have.property('end')
           res.body[0].should.have.property('location')
+          res.body[0].should.have.property('user_id')
         })
     })
   })
@@ -57,20 +59,27 @@ describe('API Routes', function () {
           res.body.should.have.property('start')
           res.body.should.have.property('end')
           res.body.should.have.property('location')
+          res.body.should.have.property('user_id')
         })
     })
   })
 
   describe('POST /api/v1/asks/', () => {
     it('create a new ask', () => {
-      return chai.request(server)
-        .post('/api/v1/asks/')
-        .send({
-          title: 'Help needed',
-          description: 'Please consider lending a hand',
-          start: new Date('Sat Apr 08 2017 10:00:00 MDT'),
-          end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
-          location: 'Pittsburgh, PA'
+      return User.getAllUsers()
+        .then((users) => {
+          const user = users[0]
+          const userID = user.id
+          return chai.request(server)
+            .post('/api/v1/asks/')
+            .send({
+              title: 'Help needed',
+              description: 'Please consider lending a hand',
+              start: new Date('Sat Apr 08 2017 10:00:00 MDT'),
+              end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
+              location: 'Pittsburgh, PA',
+              user_id: userID
+            })
         })
         .then((res) => {
           res.should.have.status(200)
@@ -115,6 +124,7 @@ describe('API Routes', function () {
           res.body.should.have.property('start')
           res.body.should.have.property('end')
           res.body.should.have.property('location')
+          res.body.should.have.property('user_id')
         })
     })
   })

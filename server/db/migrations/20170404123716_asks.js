@@ -1,5 +1,5 @@
-exports.up = knex => (
-  knex.schema.createTable('asks', (table) => {
+exports.up = knex => {
+  return knex.schema.createTable('asks', (table) => {
     table.increments('id')
     table.string('title').notNullable()
     table.string('description').notNullable()
@@ -8,8 +8,8 @@ exports.up = knex => (
     table.string('location').notNullable()
     table.timestamps(true, true)
   })
-)
+}
 
-exports.down = knex => (
-  knex.schema.dropTable('asks')
-)
+exports.down = knex => {
+  return knex.schema.dropTable('asks')
+}
