@@ -78,6 +78,7 @@ class App extends Component {
   logoutUser () {
     window.localStorage.clear()
     this.setState({ isAuthenticated: false })
+    this.createFlashMessage('Successfully logged out')
     this.props.history.push('/')
   }
   render () {
