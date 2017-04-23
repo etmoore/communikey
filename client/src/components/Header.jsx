@@ -20,6 +20,11 @@ class Header extends Component {
         <br/>
         <div className='col-sm-3'>
           <Link
+            to='/'
+            className='btn btn-primary'>
+            Home
+          </Link>
+          <Link
             to='/new'
             className='btn btn-primary'>
             New Ask
