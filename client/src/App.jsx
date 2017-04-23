@@ -10,6 +10,7 @@ import AskForm from './components/AskForm'
 import RegistrationForm from './components/RegistrationForm'
 import LoginForm from './components/LoginForm'
 import FlashMessages from './components/FlashMessages'
+import AskView from './components/AskView'
 
 class App extends Component {
   constructor (props) {
@@ -131,6 +132,11 @@ class App extends Component {
                 state: {from: location}
               }} />
         }} />
+      <Route path='/view/:id' render={({match}) => (
+          isAuthenticated
+          ? <AskView askID={match.params.id} />
+          : <Redirect to='/login' />
+        )} />
         <Route path='/edit/:id' render={({match}) => (
           isAuthenticated
           ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
