@@ -4,11 +4,20 @@ class LoginForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      email: '',
-      password: ''
+      referrer: false,
+      email: 'testuser@example.com',
+      password: 'testuser123'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.submitForm = this.submitForm.bind(this)
   }
+
+  componentWillMount () {
+    if (this.props.history.location.state){
+      this.setState({referrer: this.props.history.location.state.from.pathname})
+    }
+  }
+
   handleInputChange (event) {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -17,17 +26,27 @@ class LoginForm extends Component {
       [name]: value
     })
   }
+
+  submitForm (e) {
+    e.preventDefault()
+    const {referrer} = this.state
+    this.props.loginUser(this.state, (err) => {
+      if (err) return console.error(err)
+      if (referrer) {
+        this.props.history.push(referrer)
+      } else {
+        this.props.history.push('/')
+      }
+    })
+  }
+
   render () {
     const {email, password} = this.state
-    const {loginUser} = this.props
     return (
       <div className='login-form'>
         <h1>Login</h1>
         <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            loginUser(this.state)
-          }}
+          onSubmit={this.submitForm}
           className='form-horizontal'>
           <div className='form-group'>
             <label
