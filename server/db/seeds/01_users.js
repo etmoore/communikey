@@ -1,7 +1,8 @@
 const authHelpers = require('../../helpers/auth')
 
 exports.seed = (knex, Promise) => {
-  return knex('users').del()
+  return knex('asks').del()
+    .then(() => knex('users').del())
     .then(() => {
       const pwHash = authHelpers.hashPassword('testuser123')
       return knex('users').insert({

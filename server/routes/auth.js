@@ -18,7 +18,7 @@ router.post('/register', (req, res, next) => {
       returnObject.token = token
       res.status(200).json(returnObject)
     })
-    .catch((err) => {console.log(err); next(err)})
+    .catch(err => { console.log(err); return next(err) })
 })
 
 router.post('/login', (req, res, next) => {

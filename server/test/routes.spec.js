@@ -167,6 +167,25 @@ describe('API Routes', function () {
           res.body.status.should.eql('success')
         })
     })
+
+    it('should not allow duplicate emails', (done) => {
+      chai.request(server)
+        .post('/api/v1/auth/register')
+        .send({
+          firstName: 'Bob',
+          lastName: 'Fink',
+          email: 'testuser@example.com', // already created in seed
+          password: 'password'
+        })
+        .end((err, res) => {
+          // console.log(res)
+          should.exist(err)
+          res.status.should.eql(500)
+          res.should.be.json
+          res.body.status.should.eql('error')
+          done()
+        })
+    })
   })
 
   describe('POST /api/v1/auth/login', () => {
