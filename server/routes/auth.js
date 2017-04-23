@@ -9,8 +9,7 @@ router.post('/register', (req, res, next) => {
   const returnObject = {}
   return User.createUser(userData)
     .then((users) => {
-      console.log(users);
-      returnObject.users[0].id
+      returnObject.user = users[0].id
       return authHelpers.encodeToken(users[0])
     })
     .then((token) => {

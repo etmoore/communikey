@@ -87,7 +87,7 @@ class App extends Component {
     return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
-        window.localStorage.setItem('user', res.data.id)
+        window.localStorage.setItem('user', res.data.user)
         this.setState({ isAuthenticated: true })
       })
       .catch(err => console.error(err))
