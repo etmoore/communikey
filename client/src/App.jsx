@@ -96,9 +96,9 @@ class App extends Component {
               : <Redirect to='/login' />
           )} />
           <Route path='/edit/:id' render={({match}) => (
-            <AskForm
-              askID={match.params.id}
-              saveAsk={this.updateAsk} />
+            isAuthenticated
+              ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
+              : <Redirect to='/login' />
           )} />
           <Route path='/register' render={() => (
             <RegistrationForm registerUser={this.registerUser} />
