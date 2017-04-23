@@ -30,8 +30,10 @@ class LoginForm extends Component {
   submitForm (e) {
     e.preventDefault()
     const {referrer} = this.state
+    const {createFlashMessage} = this.props
     this.props.loginUser(this.state, (err) => {
       if (err) return console.error(err)
+      createFlashMessage('Successful login')
       if (referrer) {
         this.props.history.push(referrer)
       } else {
