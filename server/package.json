@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "lint": "./node_modules/eslint/bin/eslint.js .",
-    "test": "./node_modules/mocha/bin/mocha './test/*.spec.js'"
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha './test/*.spec.js'"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
