@@ -22,7 +22,6 @@ class AskView extends Component {
   getAsk (askID) {
     axios.get(`http://localhost:3000/api/v1/asks/${askID}`)
       .then((res) => {
-        console.log(res);
         const {title, description, start, end, location, user_id} = res.data
         this.setState({
           title,

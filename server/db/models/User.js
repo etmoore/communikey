@@ -14,6 +14,7 @@ function getUserByEmail (email) {
 }
 
 function createUser (userData) {
+  console.log(userData);
   userData.password = authHelpers.hashPassword(userData.password)
   return knex('users').insert(userData).returning('*')
 }
