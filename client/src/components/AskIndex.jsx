@@ -7,7 +7,7 @@ class AskIndex extends Component {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
-    const {asks, deleteAsk} = this.props
+    const {asks, deleteAsk, isAuthenticated} = this.props
     return (
       <div className='AskIndex'>
         <table className='table table-striped'>
@@ -34,18 +34,22 @@ class AskIndex extends Component {
                   <td>{this.formatDate(ask.end)}</td>
                   <td>{ask.location}</td>
                   <td>
-                    <button
-                      className='btn btn-danger'
-                      onClick={() => deleteAsk(ask.id)}>
-                      Delete
-                    </button>
+                    { isAuthenticated &&
+                      <button
+                        className='btn btn-danger'
+                        onClick={() => deleteAsk(ask.id)}>
+                        Delete
+                      </button>
+                    }
                   </td>
                   <td>
-                    <Link
-                      to={`/edit/${ask.id}`}
-                      className='btn btn-secondary'>
-                      Edit
-                    </Link>
+                    { isAuthenticated &&
+                      <Link
+                        to={`/edit/${ask.id}`}
+                        className='btn btn-secondary'>
+                        Edit
+                      </Link>
+                    }
                   </td>
                 </tr>
               ))
