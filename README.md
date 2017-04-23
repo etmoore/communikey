@@ -47,6 +47,20 @@ seasons and needs 5 people to help run the raffle.
 1. Dan needs help changing the oil in his car.
 1. Poudre Valley High School needs 7 chaperones for an upcoming field trip.
 
+## Getting Started
+1. Fork/Clone
+1. Open two terminal windows, one for client and one for server
+1. Open server:
+  - Install dependencies
+  - Create two Postgres databases - `communikey_dev` and `communikey_test`
+  - Run tests - `npm test`
+  - Apply migrations - `knex migrate:latest --env development`
+  - Add seed - `knex seed:run --env development`
+  - Run server - `npm start`
+1. Open client:
+    - Install dependencies
+    - Run - `npm start`
+
 ## Development
 
 MVP Stage 1: Craigslist for volunteer opportunities. Users can create accounts,
