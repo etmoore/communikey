@@ -14,7 +14,7 @@ router.post('/register', (req, res, next) => {
         token
       })
     })
-    .catch(err => next(err))
+    .catch(err => { console.log(err); return next(err) })
 })
 
 router.post('/login', (req, res, next) => {
