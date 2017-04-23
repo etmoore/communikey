@@ -33,7 +33,7 @@ class App extends Component {
     })
   }
   getAllAsks () {
-    return axios.get('http://localhost:3000/api/v1/asks')
+    return axios.get('/api/v1/asks')
       .then((res) => {
         this.setState({
           asks: res.data
@@ -42,22 +42,22 @@ class App extends Component {
       .catch(err => console.error(err))
   }
   createAsk (askData) {
-    return axios.post('http://localhost:3000/api/v1/asks', askData)
+    return axios.post('/api/v1/asks', askData)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
   updateAsk (askData, askID) {
-    return axios.put(`http://localhost:3000/api/v1/asks/${askID}`, askData)
+    return axios.put(`/api/v1/asks/${askID}`, askData)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
   deleteAsk (askID) {
-    return axios.delete(`http://localhost:3000/api/v1/asks/${askID}`)
+    return axios.delete(`/api/v1/asks/${askID}`)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
   }
   registerUser (userData) {
-    return axios.post('http://localhost:3000/api/v1/auth/register', userData)
+    return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
         this.setState({ isAuthenticated: true })
@@ -65,7 +65,7 @@ class App extends Component {
       .catch(err => console.error(err))
   }
   loginUser (userData) {
-    return axios.post('http://localhost:3000/api/v1/auth/login', userData)
+    return axios.post('/api/v1/auth/login', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
         this.setState({ isAuthenticated: true })
