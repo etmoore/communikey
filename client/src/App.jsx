@@ -9,12 +9,14 @@ import AskIndex from './components/AskIndex'
 import AskForm from './components/AskForm'
 import RegistrationForm from './components/RegistrationForm'
 import LoginForm from './components/LoginForm'
+import FlashMessages from './components/FlashMessages'
 
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
       asks: [],
+      flashMessages: [],
       isAuthenticated: false
     }
     this.getAllAsks = this.getAllAsks.bind(this)
@@ -24,12 +26,33 @@ class App extends Component {
     this.registerUser = this.registerUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
     this.logoutUser = this.logoutUser.bind(this)
+    this.deleteFlashMessage = this.deleteFlashMessage.bind(this)
+    this.createFlashMessage = this.createFlashMessage.bind(this)
   }
   componentWillMount () {
     this.getAllAsks()
     this.setState({
       isAuthenticated: !!window.localStorage.getItem('authToken')
     })
+  }
+  createFlashMessage (message) {
+    this.setState({
+      flashMessages: [...this.state.flashMessages, message]
+    })
+  }
+  deleteFlashMessage (index) {
+    if (index > 0){
+      this.setState({
+        flashMessages: [
+          ...this.state.flashMessages.slice(0, index),
+          ...this.state.flashMessages.slice(index + 1)
+        ]
+      })
+    } else {
+      this.setState({
+        flashMessages: [...this.state.flashMessages.slice(index + 1)]
+      })
+    }
   }
   getAllAsks () {
     return axios.get('/api/v1/asks')
@@ -52,7 +75,10 @@ class App extends Component {
   }
   deleteAsk (askID) {
     return axios.delete(`/api/v1/asks/${askID}`)
-      .then(() => this.getAllAsks())
+      .then(() => {
+        this.createFlashMessage('Successfully deleted Ask')
+        this.getAllAsks()
+      })
       .catch(err => console.error(err))
   }
   registerUser (userData) {
@@ -78,16 +104,18 @@ class App extends Component {
   logoutUser () {
     window.localStorage.clear()
     this.setState({ isAuthenticated: false })
-    this.createFlashMessage('Successfully logged out')
     this.props.history.push('/')
   }
   render () {
-    const {asks, isAuthenticated} = this.state
+    const {asks, isAuthenticated, flashMessages} = this.state
     return (
       <div className='App container'>
         <Header
           logoutUser={this.logoutUser}
           isAuthenticated={isAuthenticated} />
+        <FlashMessages
+          deleteFlashMessage={this.deleteFlashMessage}
+          messages={flashMessages} />
         <Route exact path='/' render={() => (
           <AskIndex
             asks={asks}
@@ -112,7 +140,10 @@ class App extends Component {
           <RegistrationForm registerUser={this.registerUser} />
         )} />
         <Route path='/login' render={({history}) => (
-          <LoginForm loginUser={this.loginUser} history={history} />
+          <LoginForm
+            createFlashMessage={this.createFlashMessage}
+            loginUser={this.loginUser}
+            history={history} />
         )} />
       </div>
     )
