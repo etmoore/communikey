@@ -4,11 +4,18 @@ class LoginForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      referrer: false,
       email: 'testuser@example.com',
       password: 'testuser123'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.submitForm = this.submitForm.bind(this)
+  }
+
+  componentWillMount () {
+    if (this.props.history.location.state){
+      this.setState({referrer: this.props.history.location.state.from.pathname})
+    }
   }
 
   handleInputChange (event) {
@@ -22,8 +29,15 @@ class LoginForm extends Component {
 
   submitForm (e) {
     e.preventDefault()
-    this.props.loginUser(this.state)
-    this.props.history.push('/')
+    const {referrer} = this.state
+    this.props.loginUser(this.state, (err) => {
+      if (err) return console.error(err)
+      if (referrer) {
+        this.props.history.push(referrer)
+      } else {
+        this.props.history.push('/')
+      }
+    })
   }
 
   render () {

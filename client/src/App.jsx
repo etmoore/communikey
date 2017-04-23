@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {
-  BrowserRouter as Router,
   Route,
-  browserHistory,
   Redirect
 } from 'react-router-dom'
 import axios from 'axios'
@@ -65,13 +63,17 @@ class App extends Component {
       })
       .catch(err => console.error(err))
   }
-  loginUser (userData) {
+  loginUser (userData, cb) {
     return axios.post('/api/v1/auth/login', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
         this.setState({ isAuthenticated: true })
+        cb(null, true)
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+        cb('something went wrong')
+      })
   }
   logoutUser () {
     window.localStorage.clear()
@@ -90,11 +92,14 @@ class App extends Component {
             asks={asks}
             deleteAsk={this.deleteAsk} />
           )} />
-        <Route path='/new' render={() => (
-          isAuthenticated
-          ? <AskForm askID={null} saveAsk={this.createAsk} />
-          : <Redirect to='/login' />
-        )} />
+        <Route path='/new' render={({location}) => {
+          return isAuthenticated
+            ? <AskForm askID={null} saveAsk={this.createAsk} />
+            : <Redirect to={{
+                pathname: '/login',
+                state: {from: location}
+              }} />
+        }} />
         <Route path='/edit/:id' render={({match}) => (
           isAuthenticated
           ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
