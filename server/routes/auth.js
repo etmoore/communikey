@@ -6,30 +6,34 @@ const router = express.Router()
 
 router.post('/register', (req, res, next) => {
   const userData = req.body
-  User.createUser(userData)
-    .then(users => authHelpers.encodeToken(users[0]))
+  const returnObject = {}
+  return User.createUser(userData)
+    .then((users) => {
+      returnObject.user = users[0].id
+      return authHelpers.encodeToken(users[0])
+    })
     .then((token) => {
-      res.status(200).json({
-        status: 'success',
-        token
-      })
+      returnObject.status = 'success'
+      returnObject.token = token
+      res.status(200).json(returnObject)
     })
     .catch(err => { console.log(err); return next(err) })
 })
 
 router.post('/login', (req, res, next) => {
   const {email, password} = req.body
+  const returnObject = {}
   User.getUserByEmail(email)
     .then((dbUser) => {
+      returnObject.id = dbUser.id
       if (!dbUser) next(new Error('invalid credentials'))
       authHelpers.comparePasswords(password, dbUser.password)
       return authHelpers.encodeToken(dbUser)
     })
     .then((token) => {
-      res.status(200).json({
-        status: 'success',
-        token: token
-      })
+      returnObject.status = 'success'
+      returnObject.token = token
+      res.status(200).json(returnObject)
     })
     .catch(err => next(err))
 })

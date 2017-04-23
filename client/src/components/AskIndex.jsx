@@ -28,7 +28,11 @@ class AskIndex extends Component {
               asks.map((ask, index) => (
                 <tr key={ask.id}>
                   <td>{ask.id}</td>
-                  <td>{ask.title}</td>
+                  <td>
+                    { <Link to={`/view/${ask.id}`}>
+                        { ask.title }
+                      </Link> }
+                  </td>
                   <td>{ask.description}</td>
                   <td>{this.formatDate(ask.start)}</td>
                   <td>{this.formatDate(ask.end)}</td>
@@ -46,7 +50,7 @@ class AskIndex extends Component {
                     { isAuthenticated &&
                       <Link
                         to={`/edit/${ask.id}`}
-                        className='btn btn-secondary'>
+                        className='btn btn-primary'>
                         Edit
                       </Link>
                     }

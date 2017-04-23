@@ -10,6 +10,7 @@ import AskForm from './components/AskForm'
 import RegistrationForm from './components/RegistrationForm'
 import LoginForm from './components/LoginForm'
 import FlashMessages from './components/FlashMessages'
+import AskView from './components/AskView'
 
 class App extends Component {
   constructor (props) {
@@ -64,6 +65,7 @@ class App extends Component {
       .catch(err => console.error(err))
   }
   createAsk (askData) {
+    askData.user_id = window.localStorage.getItem('user')
     return axios.post('/api/v1/asks', askData)
       .then(() => this.getAllAsks())
       .catch(err => console.error(err))
@@ -85,6 +87,7 @@ class App extends Component {
     return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
+        window.localStorage.setItem('user', res.data.user)
         this.setState({ isAuthenticated: true })
       })
       .catch(err => console.error(err))
@@ -93,6 +96,7 @@ class App extends Component {
     return axios.post('/api/v1/auth/login', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
+        window.localStorage.setItem('user', res.data.id)
         this.setState({ isAuthenticated: true })
         cb(null, true)
       })
@@ -131,6 +135,11 @@ class App extends Component {
                 state: {from: location}
               }} />
         }} />
+      <Route path='/view/:id' render={({match}) => (
+          isAuthenticated
+          ? <AskView askID={match.params.id} />
+          : <Redirect to='/login' />
+        )} />
         <Route path='/edit/:id' render={({match}) => (
           isAuthenticated
           ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
