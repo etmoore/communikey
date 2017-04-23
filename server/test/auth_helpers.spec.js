@@ -1,4 +1,6 @@
 /* eslint-disable no-undef, no-unused-expressions, handle-callback-err */
+process.env.NODE_ENV = 'test'
+
 const moment = require('moment')
 const chai = require('chai')
 const expect = chai.expect
