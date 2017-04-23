@@ -4,11 +4,13 @@ class LoginForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      email: '',
-      password: ''
+      email: 'testuser@example.com',
+      password: 'testuser123'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.submitForm = this.submitForm.bind(this)
   }
+
   handleInputChange (event) {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -17,17 +19,20 @@ class LoginForm extends Component {
       [name]: value
     })
   }
+
+  submitForm (e) {
+    e.preventDefault()
+    this.props.loginUser(this.state)
+    this.props.history.push('/')
+  }
+
   render () {
     const {email, password} = this.state
-    const {loginUser} = this.props
     return (
       <div className='login-form'>
         <h1>Login</h1>
         <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            loginUser(this.state)
-          }}
+          onSubmit={this.submitForm}
           className='form-horizontal'>
           <div className='form-group'>
             <label

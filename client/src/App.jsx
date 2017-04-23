@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {
   BrowserRouter as Router,
   Route,
+  browserHistory,
   Redirect
 } from 'react-router-dom'
 import axios from 'axios'
@@ -73,41 +74,39 @@ class App extends Component {
       .catch(err => console.error(err))
   }
   logoutUser () {
-    console.log('logout firing')
     window.localStorage.clear()
     this.setState({ isAuthenticated: false })
+    this.props.history.push('/')
   }
   render () {
     const {asks, isAuthenticated} = this.state
     return (
-      <Router>
-        <div className='App container'>
-          <Header
-            logoutUser={this.logoutUser}
-            isAuthenticated={isAuthenticated} />
-          <Route exact path='/' render={() => (
-            <AskIndex
-              asks={asks}
-              deleteAsk={this.deleteAsk} />
+      <div className='App container'>
+        <Header
+          logoutUser={this.logoutUser}
+          isAuthenticated={isAuthenticated} />
+        <Route exact path='/' render={() => (
+          <AskIndex
+            asks={asks}
+            deleteAsk={this.deleteAsk} />
           )} />
-          <Route path='/new' render={() => (
-            isAuthenticated
-              ? <AskForm askID={null} saveAsk={this.createAsk} />
-              : <Redirect to='/login' />
-          )} />
-          <Route path='/edit/:id' render={({match}) => (
-            isAuthenticated
-              ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
-              : <Redirect to='/login' />
-          )} />
-          <Route path='/register' render={() => (
-            <RegistrationForm registerUser={this.registerUser} />
-          )} />
-          <Route path='/login' render={() => (
-            <LoginForm loginUser={this.loginUser} />
-          )} />
-        </div>
-      </Router>
+        <Route path='/new' render={() => (
+          isAuthenticated
+          ? <AskForm askID={null} saveAsk={this.createAsk} />
+          : <Redirect to='/login' />
+        )} />
+        <Route path='/edit/:id' render={({match}) => (
+          isAuthenticated
+          ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
+          : <Redirect to='/login' />
+        )} />
+        <Route path='/register' render={() => (
+          <RegistrationForm registerUser={this.registerUser} />
+        )} />
+        <Route path='/login' render={({history}) => (
+          <LoginForm loginUser={this.loginUser} history={history} />
+        )} />
+      </div>
     )
   }
 }
