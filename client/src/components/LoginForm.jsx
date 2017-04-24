@@ -13,7 +13,7 @@ class LoginForm extends Component {
   }
 
   componentWillMount () {
-    if (this.props.history.location.state){
+    if (this.props.history.location.state) {
       this.setState({referrer: this.props.history.location.state.from.pathname})
     }
   }

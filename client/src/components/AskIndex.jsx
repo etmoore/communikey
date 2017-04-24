@@ -30,8 +30,8 @@ class AskIndex extends Component {
                   <td>{ask.id}</td>
                   <td>
                     { <Link to={`/view/${ask.id}`}>
-                        { ask.title }
-                      </Link> }
+                      { ask.title }
+                    </Link> }
                   </td>
                   <td>{ask.description}</td>
                   <td>{this.formatDate(ask.start)}</td>

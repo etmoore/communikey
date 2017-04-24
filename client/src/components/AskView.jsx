@@ -29,7 +29,7 @@ class AskView extends Component {
           start: moment(start).format('YYYY-MM-DDTHH:mm'),
           end: moment(end).format('YYYY-MM-DDTHH:mm'),
           location,
-          user_id,
+          user_id
         })
       })
       .catch(err => console.log(err))

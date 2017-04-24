@@ -17,7 +17,7 @@ class Header extends Component {
     )
     return (
       <div className='header row text-center align-bottom'>
-        <br/>
+        <br />
         <div className='col-sm-3'>
           <Link
             to='/'

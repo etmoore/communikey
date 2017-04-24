@@ -42,7 +42,7 @@ class App extends Component {
     })
   }
   deleteFlashMessage (index) {
-    if (index > 0){
+    if (index > 0) {
       this.setState({
         flashMessages: [
           ...this.state.flashMessages.slice(0, index),
@@ -131,11 +131,11 @@ class App extends Component {
           return isAuthenticated
             ? <AskForm askID={null} saveAsk={this.createAsk} />
             : <Redirect to={{
-                pathname: '/login',
-                state: {from: location}
-              }} />
+              pathname: '/login',
+              state: {from: location}
+            }} />
         }} />
-      <Route path='/view/:id' render={({match}) => (
+        <Route path='/view/:id' render={({match}) => (
           isAuthenticated
           ? <AskView askID={match.params.id} />
           : <Redirect to='/login' />
