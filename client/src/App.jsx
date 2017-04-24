@@ -90,6 +90,7 @@ class App extends Component {
         window.localStorage.setItem('authToken', res.data.token)
         window.localStorage.setItem('user', res.data.user)
         this.setState({ isAuthenticated: true })
+        this.props.history.push('/')
       })
       .catch(err => console.error(err))
   }
