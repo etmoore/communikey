@@ -36,7 +36,8 @@ class App extends Component {
       isAuthenticated: !!window.localStorage.getItem('authToken')
     })
   }
-  createFlashMessage (message) {
+  createFlashMessage (text, type = 'success') {
+    const message = { text, type }
     this.setState({
       flashMessages: [...this.state.flashMessages, message]
     })
@@ -102,13 +103,14 @@ class App extends Component {
       })
       .catch(err => {
         console.error(err)
-        cb('something went wrong')
+        cb('invalid credentials')
       })
   }
   logoutUser () {
     window.localStorage.clear()
     this.setState({ isAuthenticated: false })
     this.props.history.push('/')
+    this.createFlashMessage('You are now logged out.')
   }
   render () {
     const {asks, isAuthenticated, flashMessages} = this.state

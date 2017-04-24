@@ -1,13 +1,26 @@
 import React from 'react'
 
+function alertClass (type = 'success') {
+  let classes = {
+    error: 'alert-danger',
+    alert: 'alert-warning',
+    notice: 'alert-info',
+    success: 'alert-success'
+  }
+  return classes[type]
+}
+
 const Alert = ({message, deleteFlashMessage}) => {
+  const alertClassName = `alert ${alertClass(message.type)} fade in`
   return (
-    <div className='alert alert-info' role='alert'>
+    <div className={alertClassName} role='alert'>
       <button
         className='close'
         onClick={deleteFlashMessage}
-        data-dismiss='alert'> &times; </button>
-      {message}
+        data-dismiss='alert'>
+        &times;
+      </button>
+      {message.text}
     </div>
   )
 }
