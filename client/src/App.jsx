@@ -4,6 +4,7 @@ import {
   Redirect
 } from 'react-router-dom'
 import axios from 'axios'
+import './App.css';
 import Header from './components/Header'
 import AskIndex from './components/AskIndex'
 import AskForm from './components/AskForm'

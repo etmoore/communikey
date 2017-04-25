@@ -4,12 +4,15 @@ class RegistrationForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      error: {},
       firstName: 'Sharla',
       lastName: 'Castro',
       email: 'sharla@example.com',
-      password: 'challenger'
+      password: 'challenger',
+      passwordConfirmation: 'challenger'
     }
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.confirmPasswordMatch = this.confirmPasswordMatch.bind(this)
   }
   handleInputChange (event) {
     const target = event.target
@@ -19,8 +22,28 @@ class RegistrationForm extends Component {
       [name]: value
     })
   }
+  confirmPasswordMatch (event) {
+    const password = document.getElementById('password').value
+    const passwordConfirmation = event.target.value
+    if (passwordConfirmation !== password) {
+      this.setState({
+        error: { passwordConfirmation: 'passwords do not match' }
+      })
+    } else {
+      this.setState({
+        error: { passwordConfirmation: '' }
+      })
+    }
+  }
   render () {
-    const {firstName, lastName, email, password} = this.state
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      passwordConfirmation,
+      error
+    } = this.state
     const {registerUser} = this.props
     return (
       <div>
@@ -93,6 +116,24 @@ class RegistrationForm extends Component {
                 name='password'
                 value={password}
                 onChange={this.handleInputChange} />
+            </div>
+          </div>
+          <div className={`form-group ${error.passwordConfirmation && 'has-error'}`}>
+            <label
+              htmlFor='password-confirmation'
+              className='col-sm-2 control-label'>
+              Confirm Password
+            </label>
+            <div className='col-sm-10'>
+              <input
+                type='password'
+                className='form-control'
+                id='password-confirmation'
+                name='passwordConfirmation'
+                value={passwordConfirmation}
+                onBlur={this.confirmPasswordMatch}
+                onChange={this.handleInputChange} />
+              {error.passwordConfirmation && <span className='error-text'>{error.passwordConfirmation}</span>}
             </div>
           </div>
           <div className='form-group'>
