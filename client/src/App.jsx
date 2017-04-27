@@ -152,12 +152,16 @@ class App extends Component {
           : <Redirect to='/login' />
         )} />
         <Route path='/register' render={() => (
-          <RegistrationForm
+          isAuthenticated
+          ? <Redirect to='/' />
+          : <RegistrationForm
             createFlashMessage={this.createFlashMessage}
             registerUser={this.registerUser} />
         )} />
         <Route path='/login' render={({history}) => (
-          <LoginForm
+          isAuthenticated
+          ? <Redirect to='/' />
+          : <LoginForm
             createFlashMessage={this.createFlashMessage}
             loginUser={this.loginUser}
             history={history} />
