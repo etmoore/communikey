@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
+import _ from 'lodash'
 
 class RegistrationForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      error: {},
+      errors: {},
       firstName: 'Sharla',
       lastName: 'Castro',
       email: 'sharla@example.com',
@@ -22,16 +23,29 @@ class RegistrationForm extends Component {
       [name]: value
     })
   }
+  onSubmit (event) {
+    event.preventDefault()
+    this.props.registerUser(this.state, (errorMessage) => {
+      if (errorMessage === 'passwords do not match') {
+        this.setState({
+          errors: { passwordConfirmation: 'passwords do not match' }
+        })
+      } else {
+        this.props.createFlashMessage(errorMessage, 'error')
+      }
+    })
+  }
   confirmPasswordMatch (event) {
     const password = document.getElementById('password').value
     const passwordConfirmation = event.target.value
-    if (passwordConfirmation !== password) {
+    if (password !== passwordConfirmation) {
       this.setState({
-        error: { passwordConfirmation: 'passwords do not match' }
+        errors: { passwordConfirmation: 'passwords do not match' }
       })
     } else {
+      const errorsState = _.omit(this.state.errors, 'passwordConfirmation')
       this.setState({
-        error: { passwordConfirmation: '' }
+        errors: errorsState
       })
     }
   }
@@ -42,16 +56,14 @@ class RegistrationForm extends Component {
       email,
       password,
       passwordConfirmation,
-      error
+      errors
     } = this.state
-    const {registerUser} = this.props
     return (
       <div>
         <h1>Register</h1>
         <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            registerUser(this.state)
+          onSubmit={(event) => {
+            this.onSubmit(event)
           }}
           className='form-horizontal'>
           <div className='form-group'>
@@ -118,7 +130,7 @@ class RegistrationForm extends Component {
                 onChange={this.handleInputChange} />
             </div>
           </div>
-          <div className={`form-group ${error.passwordConfirmation && 'has-error'}`}>
+          <div className={`form-group ${errors.passwordConfirmation && 'has-error'}`}>
             <label
               htmlFor='password-confirmation'
               className='col-sm-2 control-label'>
@@ -133,12 +145,13 @@ class RegistrationForm extends Component {
                 value={passwordConfirmation}
                 onBlur={this.confirmPasswordMatch}
                 onChange={this.handleInputChange} />
-              {error.passwordConfirmation && <span className='error-text'>{error.passwordConfirmation}</span>}
+              {errors.passwordConfirmation && <span className='error-text'>{errors.passwordConfirmation}</span>}
             </div>
           </div>
           <div className='form-group'>
             <div className='col-sm-offset-2 col-sm-10'>
               <button
+                disabled={_.isEmpty(errors) ? '' : 'disabled'}
                 type='submit'
                 className='btn btn-default'>
                 Sign up

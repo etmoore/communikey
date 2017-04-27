@@ -64,18 +64,18 @@ class App extends Component {
           asks: res.data
         })
       })
-      .catch(err => console.error(err))
+      .catch(error => console.error(error))
   }
   createAsk (askData) {
     askData.user_id = window.localStorage.getItem('user')
     return axios.post('/api/v1/asks', askData)
       .then(() => this.getAllAsks())
-      .catch(err => console.error(err))
+      .catch(error => console.error(error))
   }
   updateAsk (askData, askID) {
     return axios.put(`/api/v1/asks/${askID}`, askData)
       .then(() => this.getAllAsks())
-      .catch(err => console.error(err))
+      .catch(error => console.error(error))
   }
   deleteAsk (askID) {
     return axios.delete(`/api/v1/asks/${askID}`)
@@ -83,9 +83,10 @@ class App extends Component {
         this.createFlashMessage('Successfully deleted Ask')
         this.getAllAsks()
       })
-      .catch(err => console.error(err))
+      .catch(error => console.error(error))
   }
-  registerUser (userData) {
+  registerUser (userData, callback) {
+    console.log(callback)
     return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
@@ -94,20 +95,20 @@ class App extends Component {
         this.createFlashMessage('You successfully registered! Welcome!')
         this.props.history.push('/')
       })
-      .catch(err => console.error(err))
+      .catch((error) => {
+        const errorMessage = error.response.data.error
+        callback(errorMessage)
+      })
   }
-  loginUser (userData, cb) {
+  loginUser (userData, callback) {
     return axios.post('/api/v1/auth/login', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
         window.localStorage.setItem('user', res.data.id)
         this.setState({ isAuthenticated: true })
-        cb(null, true)
+        callback(null, true)
       })
-      .catch(err => {
-        console.error(err)
-        cb('invalid credentials')
-      })
+      .catch(error => callback('invalid credentials'))
   }
   logoutUser () {
     window.localStorage.clear()
@@ -151,7 +152,9 @@ class App extends Component {
           : <Redirect to='/login' />
         )} />
         <Route path='/register' render={() => (
-          <RegistrationForm registerUser={this.registerUser} />
+          <RegistrationForm
+            createFlashMessage={this.createFlashMessage}
+            registerUser={this.registerUser} />
         )} />
         <Route path='/login' render={({history}) => (
           <LoginForm

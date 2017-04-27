@@ -6,6 +6,9 @@ const router = express.Router()
 
 router.post('/register', (req, res, next) => {
   const userData = req.body
+  if (userData.password !== userData.passwordConfirmation) {
+    return next(new Error('passwords do not match'))
+  }
   const returnObject = {}
   return User.createUser(userData)
     .then((users) => {
@@ -17,7 +20,7 @@ router.post('/register', (req, res, next) => {
       returnObject.token = token
       res.status(200).json(returnObject)
     })
-    .catch(err => { console.log(err); return next(err) })
+    .catch(err => next(err))
 })
 
 router.post('/login', (req, res, next) => {

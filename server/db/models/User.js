@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const knex = require('../knex')
 const authHelpers = require('../../helpers/auth')
 
@@ -14,6 +15,7 @@ function getUserByEmail (email) {
 }
 
 function createUser (userData) {
+  userData = _.pick(userData, ['firstName', 'lastName', 'email', 'password'])
   userData.password = authHelpers.hashPassword(userData.password)
   return knex('users').insert(userData).returning('*')
 }
