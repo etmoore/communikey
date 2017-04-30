@@ -1,5 +1,6 @@
 const express = require('express')
 const Ask = require('../db/models/Ask')
+const authHelpers = require('../helpers/auth')
 
 const router = express.Router()
 
@@ -29,7 +30,7 @@ router.put('/:id', (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', authHelpers.protect, (req, res, next) => {
   Ask.deleteAsk(req.params.id)
     .then(() => res.json({ status: 'success' }))
     .catch(err => next(err))
