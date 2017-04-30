@@ -129,13 +129,23 @@ describe('API Routes', function () {
     })
   })
 
-  describe('DELETE /api/v1/asks/:id', () => {
+  describe.only('DELETE /api/v1/asks/:id', () => {
     it('delete an ask', () => {
       let beforeCount
       return Ask.getAllAsks()
         .then((asks) => {
           beforeCount = asks.length
-          return chai.request(server).delete(`/api/v1/asks/1`)
+          return chai.request(server)
+          .post('/api/v1/auth/login')
+          .send({
+            email: 'testuser@example.com',
+            password: 'testuser123'
+          })
+        })
+        .then((response) => {
+          return chai.request(server)
+          .delete(`/api/v1/asks/1`)
+          .set('authorization', 'Bearer ' + response.body.token)
         })
         .then((res) => {
           res.body.status.should.equal('success')
@@ -147,6 +157,20 @@ describe('API Routes', function () {
     })
   })
 
+  describe('DELETE /api/v1/asks/:id', () => {
+    it('throw an error if the user is not logged in', () => {
+      let beforeCount
+      return Ask.getAllAsks()
+        .then((asks) => {
+          beforeCount = asks.length
+          return chai.request(server).delete(`/api/v1/asks/1`)
+        })
+        .catch((err) => {
+          should.exist(err)
+          err.status.should.eql(500)
+        })
+    })
+  })
   /***************/
   /* AUTH Routes */
   /***************/
@@ -250,9 +274,9 @@ describe('API Routes', function () {
         .get('/api/v1/auth/user')
         .end((err, res) => {
           should.exist(err)
-          res.status.should.eql(400)
+          res.status.should.eql(500)
           res.should.be.json
-          res.body.status.should.eql('Please log in')
+          res.body.status.should.eql('error')
           done()
         })
     })

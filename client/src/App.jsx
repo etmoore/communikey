@@ -78,7 +78,13 @@ class App extends Component {
       .catch(error => console.error(error))
   }
   deleteAsk (askID) {
-    return axios.delete(`/api/v1/asks/${askID}`)
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + window.localStorage.getItem('authToken')
+      }
+    }
+    return axios.delete(`/api/v1/asks/${askID}`, config)
       .then(() => {
         this.createFlashMessage('Successfully deleted Ask')
         this.getAllAsks()
@@ -116,6 +122,11 @@ class App extends Component {
     this.props.history.push('/')
     this.createFlashMessage('You are now logged out.')
   }
+  getUser () {
+    const user = window.localStorage.getItem('user');
+    if (user) return user;
+    return false;
+  }
   render () {
     const {asks, isAuthenticated, flashMessages} = this.state
     return (
@@ -131,6 +142,7 @@ class App extends Component {
             asks={asks}
             deleteAsk={this.deleteAsk}
             isAuthenticated={isAuthenticated}
+            getUser={this.getUser}
             />
           )} />
         <Route path='/new' render={({location}) => {
