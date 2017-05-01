@@ -26,7 +26,9 @@ function decodeToken (token, callback) {
 }
 
 function protect (req, res, next) {
-  if (!req.headers.authorization) return next('Please log in')
+  if (!req.headers.authorization) {
+    return next(new Error('Please log in'))
+  }
   const header = req.headers.authorization.split(' ')
   const token = header[1]
   decodeToken(token, (err, payload) => {

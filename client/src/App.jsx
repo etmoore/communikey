@@ -69,7 +69,7 @@ class App extends Component {
       .catch(error => console.error(error))
   }
   createAsk (askData) {
-    askData.user_id = window.localStorage.getItem('user')
+    askData.user_id = this.getCurrentUser()
     return axios.post('/api/v1/asks', askData)
       .then(() => this.getAllAsks())
       .catch(error => console.error(error))
@@ -125,7 +125,7 @@ class App extends Component {
     this.createFlashMessage('You are now logged out.')
   }
   getCurrentUser () {
-    return window.localStorage.user || false
+    return window.localStorage.user
   }
   render () {
     const {asks, isAuthenticated, flashMessages} = this.state

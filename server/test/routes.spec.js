@@ -7,6 +7,7 @@ const server = require('../app')
 const knex = require('../db/knex')
 const Ask = require('../db/models/Ask')
 const User = require('../db/models/User')
+const authHelpers = require('../helpers/auth')
 
 const should = chai.should()
 chai.use(chaiHttp)
@@ -70,8 +71,10 @@ describe('API Routes', function () {
         .then((users) => {
           const user = users[0]
           const userID = user.id
+          const authToken = authHelpers.encodeToken(user)
           return chai.request(server)
             .post('/api/v1/asks/')
+            .set('authorization', `Bearer ${authToken}`)
             .send({
               title: 'Help needed',
               description: 'Please consider lending a hand',
@@ -93,6 +96,33 @@ describe('API Routes', function () {
           res.body.should.have.property('start')
           res.body.should.have.property('end')
           res.body.should.have.property('location')
+          res.body.should.have.property('user_id')
+        })
+    })
+    it('should not allow an authorized user to create an ask', (done) => {
+      User.getAllUsers()
+        .then((users) => {
+          const user = users[0]
+          const userID = user.id
+          chai.request(server)
+            .post('/api/v1/asks/')
+            // not setting an authorization header
+            .send({
+              title: 'Help needed',
+              description: 'Please consider lending a hand',
+              start: new Date('Sat Apr 08 2017 10:00:00 MDT'),
+              end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
+              location: 'Pittsburgh, PA',
+              user_id: userID
+            })
+            .end((err, res) => {
+              should.exist(err)
+              res.should.have.status(500)
+              res.should.be.json
+              res.body.status.should.eql('error')
+              res.body.status.should.eql('error')
+              done()
+            })
         })
     })
   })
@@ -129,23 +159,23 @@ describe('API Routes', function () {
     })
   })
 
-  describe.only('DELETE /api/v1/asks/:id', () => {
+  describe('DELETE /api/v1/asks/:id', () => {
     it('delete an ask', () => {
       let beforeCount
       return Ask.getAllAsks()
         .then((asks) => {
           beforeCount = asks.length
           return chai.request(server)
-          .post('/api/v1/auth/login')
-          .send({
-            email: 'testuser@example.com',
-            password: 'testuser123'
-          })
+            .post('/api/v1/auth/login')
+            .send({
+              email: 'testuser@example.com',
+              password: 'testuser123'
+            })
         })
         .then((response) => {
           return chai.request(server)
-          .delete(`/api/v1/asks/1`)
-          .set('authorization', 'Bearer ' + response.body.token)
+            .delete(`/api/v1/asks/1`)
+            .set('authorization', 'Bearer ' + response.body.token)
         })
         .then((res) => {
           res.body.status.should.equal('success')
@@ -159,7 +189,6 @@ describe('API Routes', function () {
 
   describe('DELETE /api/v1/asks/:id', () => {
     it('throw an error if the user is not logged in', () => {
-      let beforeCount
       return Ask.getAllAsks()
         .then((asks) => {
           beforeCount = asks.length
@@ -175,20 +204,23 @@ describe('API Routes', function () {
   /* AUTH Routes */
   /***************/
   describe('POST /api/v1/auth/register', () => {
-    it('registers a new user', () => {
-      return chai.request(server)
+    it('registers a new user', (done) => {
+      chai.request(server)
         .post('/api/v1/auth/register')
         .send({
           firstName: 'Bob',
           lastName: 'Fink',
           email: 'bob@example.com',
-          password: 'password'
+          password: 'password',
+          passwordConfirmation: 'password'
         })
-        .then((res) => {
+        .end((err, res) => {
+          should.not.exist(err)
           res.status.should.equal(200)
           res.should.be.json
           res.body.should.include.keys('status', 'token')
           res.body.status.should.eql('success')
+          done()
         })
     })
 
