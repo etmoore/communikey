@@ -124,10 +124,8 @@ class App extends Component {
     this.props.history.push('/')
     this.createFlashMessage('You are now logged out.')
   }
-  getUser () {
-    const user = window.localStorage.getItem('user');
-    if (user) return user;
-    return false;
+  getCurrentUser () {
+    return window.localStorage.user || false
   }
   render () {
     const {asks, isAuthenticated, flashMessages} = this.state
@@ -145,7 +143,7 @@ class App extends Component {
               asks={asks}
               deleteAsk={this.deleteAsk}
               isAuthenticated={isAuthenticated}
-              getUser={this.getUser}
+              getCurrentUser={this.getCurrentUser}
               />
             )} />
           <Route path='/new' render={({location}) => {

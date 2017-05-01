@@ -7,7 +7,7 @@ class AskIndex extends Component {
     return moment(date).format('dddd, MMMM D, h:mm a')
   }
   render () {
-    const {asks, deleteAsk, isAuthenticated, getUser} = this.props
+    const {asks, deleteAsk, isAuthenticated, getCurrentUser} = this.props
     return (
       <div className='AskIndex'>
         <table className='table table-striped'>
@@ -39,7 +39,7 @@ class AskIndex extends Component {
                   <td>{ask.location}</td>
                   <td>
                     { isAuthenticated &&
-                      parseInt(getUser(), 10) === parseInt(ask.user_id, 10) &&
+                      parseInt(getCurrentUser(), 10) === parseInt(ask.user_id, 10) &&
                       <button
                         className='btn btn-danger'
                         onClick={() => deleteAsk(ask.id)}>
@@ -49,6 +49,7 @@ class AskIndex extends Component {
                   </td>
                   <td>
                     { isAuthenticated &&
+                      parseInt(getCurrentUser(), 10) === parseInt(ask.user_id, 10) &&
                       <Link
                         to={`/edit/${ask.id}`}
                         className='btn btn-primary'>
