@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {
   Route,
-  Redirect
+  Redirect,
+  Switch
 } from 'react-router-dom'
 import axios from 'axios'
 import './App.css';
@@ -12,6 +13,7 @@ import RegistrationForm from './components/RegistrationForm'
 import LoginForm from './components/LoginForm'
 import FlashMessages from './components/FlashMessages'
 import AskView from './components/AskView'
+import NotFound from './components/NotFound'
 
 class App extends Component {
   constructor (props) {
@@ -137,47 +139,50 @@ class App extends Component {
         <FlashMessages
           deleteFlashMessage={this.deleteFlashMessage}
           messages={flashMessages} />
-        <Route exact path='/' render={() => (
-          <AskIndex
-            asks={asks}
-            deleteAsk={this.deleteAsk}
-            isAuthenticated={isAuthenticated}
-            getUser={this.getUser}
-            />
+        <Switch>
+          <Route exact path='/' render={() => (
+            <AskIndex
+              asks={asks}
+              deleteAsk={this.deleteAsk}
+              isAuthenticated={isAuthenticated}
+              getUser={this.getUser}
+              />
+            )} />
+          <Route path='/new' render={({location}) => {
+            return isAuthenticated
+              ? <AskForm askID={null} saveAsk={this.createAsk} />
+              : <Redirect to={{
+                pathname: '/login',
+                state: {from: location}
+              }} />
+          }} />
+          <Route path='/view/:id' render={({match}) => (
+            isAuthenticated
+            ? <AskView askID={match.params.id} />
+            : <Redirect to='/login' />
           )} />
-        <Route path='/new' render={({location}) => {
-          return isAuthenticated
-            ? <AskForm askID={null} saveAsk={this.createAsk} />
-            : <Redirect to={{
-              pathname: '/login',
-              state: {from: location}
-            }} />
-        }} />
-        <Route path='/view/:id' render={({match}) => (
-          isAuthenticated
-          ? <AskView askID={match.params.id} />
-          : <Redirect to='/login' />
-        )} />
-        <Route path='/edit/:id' render={({match}) => (
-          isAuthenticated
-          ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
-          : <Redirect to='/login' />
-        )} />
-        <Route path='/register' render={() => (
-          isAuthenticated
-          ? <Redirect to='/' />
-          : <RegistrationForm
-            createFlashMessage={this.createFlashMessage}
-            registerUser={this.registerUser} />
-        )} />
-        <Route path='/login' render={({history}) => (
-          isAuthenticated
-          ? <Redirect to='/' />
-          : <LoginForm
-            createFlashMessage={this.createFlashMessage}
-            loginUser={this.loginUser}
-            history={history} />
-        )} />
+          <Route path='/edit/:id' render={({match}) => (
+            isAuthenticated
+            ? <AskForm askID={match.params.id} saveAsk={this.updateAsk} />
+            : <Redirect to='/login' />
+          )} />
+          <Route path='/register' render={() => (
+            isAuthenticated
+            ? <Redirect to='/' />
+            : <RegistrationForm
+              createFlashMessage={this.createFlashMessage}
+              registerUser={this.registerUser} />
+          )} />
+          <Route path='/login' render={({history}) => (
+            isAuthenticated
+            ? <Redirect to='/' />
+            : <LoginForm
+              createFlashMessage={this.createFlashMessage}
+              loginUser={this.loginUser}
+              history={history} />
+          )} />
+          <Route component={NotFound} />
+        </Switch>
       </div>
     )
   }
