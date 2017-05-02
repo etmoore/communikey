@@ -23,7 +23,7 @@ router.post('/', protect, (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', protect, (req, res, next) => {
   Ask.updateAsk(req.params.id, req.body)
     .then(id => Ask.getAsk(id))
     .then(updatedJob => res.json(updatedJob))

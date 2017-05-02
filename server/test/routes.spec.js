@@ -99,7 +99,7 @@ describe('API Routes', function () {
           res.body.should.have.property('user_id')
         })
     })
-    it('should not allow an authorized user to create an ask', (done) => {
+    it('should not allow an unauthorized user to create an ask', (done) => {
       User.getAllUsers()
         .then((users) => {
           const user = users[0]
@@ -128,12 +128,53 @@ describe('API Routes', function () {
   })
 
   describe('PUT /api/v1/asks/:id', () => {
-    it('update an ask', () => {
-      return Ask.getAllAsks()
+    it('should update an ask', (done) => {
+      chai.request(server)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'testuser@example.com',
+          password: 'testuser123'
+        })
+        .then((res) => {
+          const authToken = res.body.token
+          Ask.getAllAsks()
+            .then((asks) => {
+              const ask = asks[0]
+              chai.request(server)
+                .put(`/api/v1/asks/${ask.id}`)
+                .set('authorization', `Bearer ${authToken}`)
+                .send({
+                  title: 'Help needed',
+                  description: 'Please consider lending a hand',
+                  start: new Date('Sat Apr 08 2017 10:00:00 MDT'),
+                  end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
+                  location: 'Pittsburgh, PA'
+                })
+                .end((err, res) => {
+                  res.should.have.status(200)
+                  res.should.be.json
+                  res.body.should.be.a('object')
+                  res.body.should.have.property('id')
+                  res.body.should.have.property('title')
+                  res.body.title.should.equal('Help needed')
+                  res.body.should.have.property('description')
+                  res.body.description.should.equal('Please consider lending a hand')
+                  res.body.should.have.property('start')
+                  res.body.should.have.property('end')
+                  res.body.should.have.property('location')
+                  res.body.should.have.property('user_id')
+                  done()
+                })
+            })
+        })
+    })
+    it('should not allow an unauthorized user to update an ask', (done) => {
+      Ask.getAllAsks()
         .then((asks) => {
           const ask = asks[0]
-          return chai.request(server)
+          chai.request(server)
             .put(`/api/v1/asks/${ask.id}`)
+            // NOT setting an authorization header
             .send({
               title: 'Help needed',
               description: 'Please consider lending a hand',
@@ -141,26 +182,20 @@ describe('API Routes', function () {
               end: new Date('Sat Apr 08 2017 16:00:00 MDT'),
               location: 'Pittsburgh, PA'
             })
-        })
-        .then((res) => {
-          res.should.have.status(200)
-          res.should.be.json
-          res.body.should.be.a('object')
-          res.body.should.have.property('id')
-          res.body.should.have.property('title')
-          res.body.title.should.equal('Help needed')
-          res.body.should.have.property('description')
-          res.body.description.should.equal('Please consider lending a hand')
-          res.body.should.have.property('start')
-          res.body.should.have.property('end')
-          res.body.should.have.property('location')
-          res.body.should.have.property('user_id')
+            .end((err, res) => {
+              should.exist(err)
+              res.should.be.json
+              res.should.have.status(500)
+              res.body.status.should.eql('error')
+              res.body.error.should.eql('Please log in')
+              done()
+            })
         })
     })
   })
 
   describe('DELETE /api/v1/asks/:id', () => {
-    it('delete an ask', () => {
+    it('should delete an ask', () => {
       let beforeCount
       return Ask.getAllAsks()
         .then((asks) => {
