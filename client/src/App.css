@@ -1,3 +1,11 @@
 .error-text {
   color: red;
 }
+
+.header {
+  margin-top: 40px;
+}
+
+.brand {
+  margin: 0;
+}

@@ -16,8 +16,7 @@ class Header extends Component {
       </div>
     )
     return (
-      <div className='header row text-center align-bottom'>
-        <br />
+      <div className='header row text-center'>
         <div className='col-sm-3'>
           <Link
             to='/'
@@ -31,7 +30,7 @@ class Header extends Component {
           </Link>
         </div>
         <div className='col-sm-6'>
-          <h1>Communikey 🔑</h1>
+          <h1 className='brand'>Communikey 🔑</h1>
         </div>
         <div className='col-sm-3'>
           {isAuthenticated ? userLinks : guestLinks}
