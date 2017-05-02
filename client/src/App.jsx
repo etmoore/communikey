@@ -80,6 +80,7 @@ class App extends Component {
       .catch(error => console.error(error))
   }
   deleteAsk (askID) {
+    if (!window.confirm('Are you sure?')) return
     const config = {
       headers: {
         'Content-Type': 'application/json',
