@@ -83,18 +83,18 @@ class App extends Component {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + window.localStorage.getItem('authToken')
+        Authorization: `Bearer ${window.localStorage.getItem('authToken')}`
       }
     }
     return axios.delete(`/api/v1/asks/${askID}`, config)
       .then(() => {
+        this.props.history.push('/')
         this.createFlashMessage('Successfully deleted Ask')
         this.getAllAsks()
       })
       .catch(error => console.error(error))
   }
   registerUser (userData, callback) {
-    console.log(callback)
     return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
         window.localStorage.setItem('authToken', res.data.token)
@@ -156,7 +156,12 @@ class App extends Component {
           }} />
           <Route path='/view/:id' render={({match}) => (
             isAuthenticated
-            ? <AskView askID={match.params.id} />
+            ? <AskView
+                askID={match.params.id}
+                deleteAsk={this.deleteAsk}
+                isAuthenticated={isAuthenticated}
+                getCurrentUser={this.getCurrentUser}
+              />
             : <Redirect to='/login' />
           )} />
           <Route path='/edit/:id' render={({match}) => (
