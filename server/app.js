@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 const asksRoutes = require('./routes/asks')
+const usersRoutes = require('./routes/users')
 const authRoutes = require('./routes/auth')
 
 const app = express()
@@ -26,6 +27,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/v1/asks', asksRoutes)
+app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/auth', authRoutes)
 
 // catch 404 and forward to error handler

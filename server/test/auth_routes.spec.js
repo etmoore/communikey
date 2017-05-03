@@ -9,7 +9,7 @@ const should = chai.should()
 
 chai.use(chaiHttp)
 
-describe('API Routes', function () {
+describe('Auth Routes', function () {
   beforeEach(() => {
     return knex.migrate.rollback()
       .then(() => knex.migrate.latest())
@@ -85,42 +85,6 @@ describe('API Routes', function () {
           email: 'baduser@example.com',
           password: 'testuser123'
         })
-        .end((err, res) => {
-          should.exist(err)
-          res.status.should.eql(500)
-          res.should.be.json
-          res.body.status.should.eql('error')
-          done()
-        })
-    })
-  })
-
-  describe('GET api/v1/auth/user', () => {
-    it('should return with status: success', (done) => {
-      chai.request(server)
-        .post('/api/v1/auth/login')
-        .send({
-          email: 'testuser@example.com',
-          password: 'testuser123'
-        })
-        .end((error, response) => {
-          should.not.exist(error)
-          const token = response.body.token
-          chai.request(server)
-            .get('/api/v1/auth/user')
-            .set('authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              should.not.exist(err)
-              res.status.should.eql(200)
-              res.should.be.json
-              res.body.status.should.eql('success')
-              done()
-            })
-        })
-    })
-    it('should throw an error if a user is not logged in', (done) => {
-      chai.request(server)
-        .get('/api/v1/auth/user')
         .end((err, res) => {
           should.exist(err)
           res.status.should.eql(500)

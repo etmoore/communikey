@@ -41,10 +41,4 @@ router.post('/login', (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.get('/user', authHelpers.protect, (req, res, next) => {
-  res.status(200).json({
-    status: 'success'
-  })
-})
-
 module.exports = router

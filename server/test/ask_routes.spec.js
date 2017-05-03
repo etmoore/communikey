@@ -12,7 +12,7 @@ const authHelpers = require('../helpers/auth')
 const should = chai.should()
 chai.use(chaiHttp)
 
-describe('API Routes', function () {
+describe('Ask Routes', function () {
   beforeEach(() => {
     return knex.migrate.rollback()
       .then(() => knex.migrate.latest())
@@ -114,7 +114,7 @@ describe('API Routes', function () {
             })
             .end((err, res) => {
               should.exist(err)
-              res.should.have.status(500)
+              res.should.have.status(401)
               res.should.be.json
               res.body.status.should.eql('error')
               res.body.status.should.eql('error')
@@ -182,7 +182,7 @@ describe('API Routes', function () {
             .end((err, res) => {
               should.exist(err)
               res.should.be.json
-              res.should.have.status(500)
+              res.should.have.status(401)
               res.body.status.should.eql('error')
               res.body.error.should.eql('Please log in')
               done()
@@ -228,7 +228,7 @@ describe('API Routes', function () {
         })
         .catch((err) => {
           should.exist(err)
-          err.status.should.eql(500)
+          err.status.should.eql(401)
         })
     })
   })

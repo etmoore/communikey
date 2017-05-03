@@ -22,20 +22,25 @@ function encodeToken (user, exp) {
 }
 
 function decodeToken (token, callback) {
-  jwt.verify(token, process.env.TOKEN_SECRET, callback)
+  return jwt.verify(token, process.env.TOKEN_SECRET, callback)
 }
 
-function protect (req, res, next) {
+function decodeTokenSync (token) {
+  return jwt.verify(token, process.env.TOKEN_SECRET)
+}
+
+function requireLogin (req, res, next) {
   if (!req.headers.authorization) {
-    return next(new Error('Please log in'))
+    const error = new Error('Please log in')
+    error.status = 401
+    return next(error)
   }
   const header = req.headers.authorization.split(' ')
   const token = header[1]
   decodeToken(token, (err, payload) => {
     if (err) {
-      res.status(401).json({
-        status: err.message
-      })
+      err.status = 401
+      next(err)
     } else {
       const userID = parseInt(payload.sub, 10)
       // confirm that the user is still in the DB
@@ -51,5 +56,6 @@ module.exports = {
   hashPassword,
   encodeToken,
   decodeToken,
-  protect
+  decodeTokenSync,
+  requireLogin
 }
