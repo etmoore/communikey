@@ -35,8 +35,11 @@ describe('Auth Routes', function () {
           should.not.exist(err)
           res.status.should.equal(200)
           res.should.be.json
-          res.body.should.include.keys('status', 'token')
+          res.body.should.include.keys('status', 'token', 'user')
           res.body.status.should.eql('success')
+          res.body.user.should.be.an('object')
+          res.body.user.should.include.keys('firstName', 'lastName', 'id', 'email')
+          res.body.user.should.not.include.keys('password')
           done()
         })
     })
@@ -62,7 +65,7 @@ describe('Auth Routes', function () {
   })
 
   describe('POST /api/v1/auth/login', () => {
-    it('should login a user', () => {
+    it('should return a token and user object', () => {
       return chai.request(server)
         .post('/api/v1/auth/login')
         .send({
@@ -73,9 +76,12 @@ describe('Auth Routes', function () {
           res.redirects.length.should.eql(0)
           res.status.should.eql(200)
           res.should.be.json
-          res.body.should.include.keys('status', 'token')
+          res.body.should.include.keys('status', 'token', 'user')
           res.body.status.should.eql('success')
           res.body.token.should.be.a('string')
+          res.body.user.should.be.an('object')
+          res.body.user.should.include.keys('firstName', 'lastName', 'id', 'email')
+          res.body.user.should.not.include.keys('password')
         })
     })
     it('should not login an unregistered user', (done) => {

@@ -1,4 +1,5 @@
 const express = require('express')
+const _ = require('lodash')
 const User = require('../db/models/User')
 const authHelpers = require('../helpers/auth')
 
@@ -12,7 +13,7 @@ router.post('/register', (req, res, next) => {
   const returnObject = {}
   return User.createUser(userData)
     .then((users) => {
-      returnObject.user = users[0].id
+      returnObject.user = _.pick(users[0], ['firstName', 'lastName', 'id', 'email'])
       return authHelpers.encodeToken(users[0])
     })
     .then((token) => {
@@ -28,7 +29,7 @@ router.post('/login', (req, res, next) => {
   const returnObject = {}
   User.getUserByEmail(email)
     .then((dbUser) => {
-      returnObject.id = dbUser.id
+      returnObject.user = _.pick(dbUser, ['firstName', 'lastName', 'id', 'email'])
       if (!dbUser) next(new Error('invalid credentials'))
       authHelpers.comparePasswords(password, dbUser.password)
       return authHelpers.encodeToken(dbUser)
