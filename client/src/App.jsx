@@ -5,7 +5,8 @@ import {
   Switch
 } from 'react-router-dom'
 import axios from 'axios'
-import './App.css';
+import './App.css'
+import * as utils from './utils'
 import Header from './components/Header'
 import AskIndex from './components/AskIndex'
 import AskForm from './components/AskForm'
@@ -13,6 +14,7 @@ import RegistrationForm from './components/RegistrationForm'
 import LoginForm from './components/LoginForm'
 import FlashMessages from './components/FlashMessages'
 import AskView from './components/AskView'
+import UserProfile from './components/UserProfile'
 import NotFound from './components/NotFound'
 
 class App extends Component {
@@ -95,11 +97,9 @@ class App extends Component {
       .catch(error => console.error(error))
   }
   registerUser (userData, callback) {
-    console.log(callback)
     return axios.post('/api/v1/auth/register', userData)
       .then((res) => {
-        window.localStorage.setItem('authToken', res.data.token)
-        window.localStorage.setItem('user', res.data.user)
+        utils.saveUserData(res.data)
         this.setState({ isAuthenticated: true })
         this.createFlashMessage('You successfully registered! Welcome!')
         this.props.history.push('/')
@@ -112,12 +112,11 @@ class App extends Component {
   loginUser (userData, callback) {
     return axios.post('/api/v1/auth/login', userData)
       .then((res) => {
-        window.localStorage.setItem('authToken', res.data.token)
-        window.localStorage.setItem('user', res.data.id)
+        utils.saveUserData(res.data)
         this.setState({ isAuthenticated: true })
         callback(null, true)
       })
-      .catch(error => callback('invalid credentials'))
+      .catch(error => { console.log(error); callback('invalid credentials')})
   }
   logoutUser () {
     window.localStorage.clear()
@@ -126,7 +125,7 @@ class App extends Component {
     this.createFlashMessage('You are now logged out.')
   }
   getCurrentUser () {
-    return window.localStorage.user
+    return window.localStorage.userID
   }
   render () {
     const {asks, isAuthenticated, flashMessages} = this.state
@@ -147,14 +146,13 @@ class App extends Component {
               getCurrentUser={this.getCurrentUser}
               />
             )} />
-          <Route path='/new' render={({location}) => {
-            return isAuthenticated
-              ? <AskForm askID={null} saveAsk={this.createAsk} />
-              : <Redirect to={{
-                pathname: '/login',
-                state: {from: location}
-              }} />
-          }} />
+          <Route path='/new' render={({location}) => (
+            isAuthenticated
+            ? <AskForm askID={null} saveAsk={this.createAsk} />
+            : <Redirect to={{
+              pathname: '/login',
+              state: {from: location} }} />
+          )} />
           <Route path='/view/:id' render={({match}) => (
             isAuthenticated
             ? <AskView askID={match.params.id} />
