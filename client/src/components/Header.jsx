@@ -6,6 +6,7 @@ class Header extends Component {
     const {isAuthenticated, logoutUser} = this.props
     const userLinks = (
       <ul>
+        <Link className='btn btn-primary' to='/profile'>Profile</Link>
         <li className='btn btn-primary' onClick={logoutUser}>Logout</li>
       </ul>
     )

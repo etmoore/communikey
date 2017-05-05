@@ -116,7 +116,7 @@ class App extends Component {
         this.setState({ isAuthenticated: true })
         callback(null, true)
       })
-      .catch(error => { console.log(error); callback('invalid credentials')})
+      .catch(error => callback('invalid credentials'))
   }
   logoutUser () {
     window.localStorage.clear()
@@ -178,6 +178,13 @@ class App extends Component {
               loginUser={this.loginUser}
               history={history} />
           )} />
+          <Route path='/profile' render={({location}) => (
+            isAuthenticated
+            ? <UserProfile />
+            : <Redirect to={{
+              pathname: '/login',
+              state: {from: location} }} />
+          )}/>
           <Route component={NotFound} />
         </Switch>
       </div>
