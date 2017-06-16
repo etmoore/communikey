@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -6,6 +7,7 @@ class AskView extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      id: null,
       title: null,
       description: null,
       start: null,
@@ -22,8 +24,9 @@ class AskView extends Component {
   getAsk (askID) {
     axios.get(`http://localhost:3000/api/v1/asks/${askID}`)
       .then((res) => {
-        const {title, description, start, end, location, user_id} = res.data
+        const {id, title, description, start, end, location, user_id} = res.data
         this.setState({
+          id,
           title,
           description,
           start: moment(start).format('YYYY-MM-DDTHH:mm'),
@@ -35,7 +38,8 @@ class AskView extends Component {
       .catch(err => console.log(err))
   }
   render () {
-    const {title, description, start, end, location, user_id} = this.state
+    const {id, title, description, start, end, location, user_id} = this.state
+    const {deleteAsk, isAuthenticated, getCurrentUser} = this.props
     return (
       <div>
         <h1>{title}</h1>
@@ -43,6 +47,22 @@ class AskView extends Component {
         <p><span>{start}</span><span>{end}</span></p>
         <p>{location}</p>
         <p><span>Created by </span>{user_id}</p>
+        { isAuthenticated &&
+          parseInt(getCurrentUser(), 10) === parseInt(user_id, 10) &&
+          <button
+            className='btn btn-danger'
+            onClick={() => deleteAsk(id)}>
+            Delete
+          </button>
+        }
+        { isAuthenticated &&
+          parseInt(getCurrentUser(), 10) === parseInt(user_id, 10) &&
+          <Link
+            to={`/edit/${id}`}
+            className='btn btn-primary'>
+            Edit
+          </Link>
+        }
       </div>
     )
   }
